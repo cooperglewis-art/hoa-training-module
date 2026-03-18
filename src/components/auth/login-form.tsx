@@ -1,10 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { loginSchema, type LoginInput } from "@/lib/validation/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,61 +13,39 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useToast } from "@/components/ui/use-toast";
 
 export function LoginForm() {
-  const router = useRouter();
-  const { toast } = useToast();
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState<Partial<Record<keyof LoginInput, string>>>({});
 
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setErrors({});
+    setError("");
     setIsLoading(true);
 
     const formData = new FormData(e.currentTarget);
-    const data = {
-      email: formData.get("email") as string,
-      password: formData.get("password") as string,
-    };
-
-    const result = loginSchema.safeParse(data);
-    if (!result.success) {
-      const fieldErrors: Partial<Record<keyof LoginInput, string>> = {};
-      for (const issue of result.error.issues) {
-        const field = issue.path[0] as keyof LoginInput;
-        fieldErrors[field] = issue.message;
-      }
-      setErrors(fieldErrors);
-      setIsLoading(false);
-      return;
-    }
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
 
     try {
-      const response = await signIn("credentials", {
-        email: data.email,
-        password: data.password,
-        redirect: false,
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
       });
 
-      if (response?.error) {
-        toast({
-          title: "Login failed",
-          description: "Invalid email or password. Please try again.",
-          variant: "destructive",
-        });
-      } else {
-        router.push("/dashboard");
-        router.refresh();
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || "Invalid email or password.");
+        setIsLoading(false);
+        return;
       }
+
+      // Successful login — hard redirect to dashboard
+      window.location.href = "/dashboard";
     } catch {
-      toast({
-        title: "Error",
-        description: "Something went wrong. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
+      setError("Something went wrong. Please try again.");
       setIsLoading(false);
     }
   }
@@ -85,8 +60,13 @@ export function LoginForm() {
           Enter your credentials to access the training platform.
         </CardDescription>
       </CardHeader>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={handleSubmit}>
         <CardContent className="space-y-4">
+          {error && (
+            <div className="rounded-md bg-red-50 border border-red-200 p-3 text-sm text-red-700">
+              {error}
+            </div>
+          )}
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input
@@ -96,10 +76,8 @@ export function LoginForm() {
               placeholder="you@example.com"
               autoComplete="email"
               disabled={isLoading}
+              required
             />
-            {errors.email && (
-              <p className="text-sm text-destructive">{errors.email}</p>
-            )}
           </div>
           <div className="space-y-2">
             <div className="flex items-center justify-between">
@@ -117,10 +95,8 @@ export function LoginForm() {
               type="password"
               autoComplete="current-password"
               disabled={isLoading}
+              required
             />
-            {errors.password && (
-              <p className="text-sm text-destructive">{errors.password}</p>
-            )}
           </div>
         </CardContent>
         <CardFooter className="flex flex-col gap-4">

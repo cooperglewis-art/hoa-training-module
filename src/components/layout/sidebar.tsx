@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { signOut } from "next-auth/react";
+// signOut handled via cookie deletion
 import {
   LayoutDashboard,
   BookOpen,
@@ -41,7 +41,7 @@ interface NavItem {
 const navItemsByRole: Record<Role, NavItem[]> = {
   LEARNER: [
     { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-    { label: "Modules", href: "/dashboard", icon: BookOpen },
+    { label: "Assessment", href: "/assessment", icon: ClipboardCheck },
     { label: "Certificate", href: "/certificate", icon: Award },
   ],
   ORG_ADMIN: [
@@ -164,7 +164,7 @@ export function Sidebar({
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={() => signOut({ callbackUrl: "/login" })}
+                  onClick={() => { fetch("/api/auth/logout", { method: "POST" }).then(() => { window.location.href = "/login"; }); }}
                   className="w-full text-[#675D4F] hover:text-red-600"
                   aria-label="Sign out"
                 >
@@ -178,7 +178,7 @@ export function Sidebar({
           ) : (
             <Button
               variant="ghost"
-              onClick={() => signOut({ callbackUrl: "/login" })}
+              onClick={() => { fetch("/api/auth/logout", { method: "POST" }).then(() => { window.location.href = "/login"; }); }}
               className="w-full justify-start gap-2 text-[#675D4F] hover:text-red-600"
             >
               <LogOut className="h-4 w-4" />

@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { auth } from "@/lib/auth";
+import { getSession } from "@/lib/session";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -16,8 +16,8 @@ import {
 import { Pencil, BookOpen } from "lucide-react";
 
 export default async function ContentPage() {
-  const session = await auth();
-  if (!session?.user?.id) redirect("/login");
+  const session = await getSession();
+  if (!session) redirect("/login");
 
   const modules = await db.module.findMany({
     orderBy: { sortOrder: "asc" },

@@ -1,6 +1,6 @@
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
-import { auth } from "@/lib/auth";
+import { getSession } from "@/lib/session";
 import { getPublishedContent, getModuleWithLessons } from "@/lib/content";
 import { db } from "@/lib/db";
 import { LessonRenderer } from "@/components/lesson/LessonRenderer";
@@ -15,8 +15,8 @@ interface LessonPageProps {
 export default async function LessonPage({ params }: LessonPageProps) {
   const { moduleId, lessonId } = await params;
 
-  const session = await auth();
-  if (!session?.user?.id) {
+  const session = await getSession();
+  if (!session) {
     redirect("/login");
   }
 
@@ -44,7 +44,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
   // Get user's module progress
   const progress = await db.moduleProgress.findUnique({
     where: {
-      userId_moduleId: { userId: session.user.id, moduleId },
+      userId_moduleId: { userId: session.id, moduleId },
     },
   });
   const completedLessons = new Set(progress?.completedLessons ?? []);
@@ -52,7 +52,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
 
   // Get user's org type for statute filtering
   const membership = await db.membership.findFirst({
-    where: { userId: session.user.id },
+    where: { userId: session.id },
     include: { org: true },
     orderBy: { joinedAt: "desc" },
   });

@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { auth } from "@/lib/auth";
+import { getSession } from "@/lib/session";
 import { redirect } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -17,11 +17,11 @@ import { CreateInviteForm } from "./create-invite-form";
 import { CopyLinkButton } from "./copy-link-button";
 
 export default async function OrgInvitesPage() {
-  const session = await auth();
-  if (!session?.user?.id) redirect("/login");
+  const session = await getSession();
+  if (!session) redirect("/login");
 
   const membership = await db.membership.findFirst({
-    where: { userId: session.user.id },
+    where: { userId: session.id },
     orderBy: { joinedAt: "desc" },
     include: { org: true },
   });

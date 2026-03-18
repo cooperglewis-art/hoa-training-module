@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { auth } from "@/lib/auth";
+import { getSession } from "@/lib/session";
 import { redirect } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -24,8 +24,8 @@ interface Props {
 
 export default async function AuditLogPage({ searchParams }: Props) {
   const resolvedParams = await searchParams;
-  const session = await auth();
-  if (!session?.user?.id) redirect("/login");
+  const session = await getSession();
+  if (!session) redirect("/login");
 
   const page = Math.max(1, parseInt(resolvedParams.page ?? "1", 10));
   const actionFilter = resolvedParams.action ?? undefined;

@@ -1,15 +1,15 @@
-import { auth } from "@/lib/auth";
+import { getSession } from "@/lib/session";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  const session = await auth();
-  if (!session?.user?.id) {
+  const session = await getSession();
+  if (!session?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const membership = await db.membership.findFirst({
-    where: { userId: session.user.id },
+    where: { userId: session.id },
     orderBy: { joinedAt: "desc" },
   });
 

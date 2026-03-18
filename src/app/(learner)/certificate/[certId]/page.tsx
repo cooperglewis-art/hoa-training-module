@@ -1,4 +1,4 @@
-import { auth } from "@/lib/auth";
+import { getSession } from "@/lib/session";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 import Link from "next/link";
@@ -12,8 +12,8 @@ export default async function CertificatePage({
 }: {
   params: Promise<{ certId: string }>;
 }) {
-  const session = await auth();
-  if (!session?.user?.id) redirect("/login");
+  const session = await getSession();
+  if (!session) redirect("/login");
 
   const { certId } = await params;
 
@@ -27,11 +27,11 @@ export default async function CertificatePage({
 
   // Only allow owner or admins
   const membership = await db.membership.findFirst({
-    where: { userId: session.user.id },
+    where: { userId: session.id },
   });
 
   if (
-    certificate.userId !== session.user.id &&
+    certificate.userId !== session.id &&
     membership?.role === "LEARNER"
   ) {
     redirect("/assessment");

@@ -1,24 +1,43 @@
-import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { jwtVerify } from "jose";
 
-export default auth((req) => {
+const secret = new TextEncoder().encode(
+  process.env.NEXTAUTH_SECRET || "dev-secret"
+);
+
+async function getSession(req: NextRequest) {
+  const token = req.cookies.get("session-token")?.value;
+  if (!token) return null;
+  try {
+    const { payload } = await jwtVerify(token, secret);
+    return payload as any;
+  } catch {
+    return null;
+  }
+}
+
+export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
-  const session = req.auth;
 
   // Public routes
-  const publicPaths = ["/", "/login", "/register", "/forgot-password", "/reset-password"];
-  const isPublic = publicPaths.some((p) => pathname === p) || pathname.startsWith("/invite/") || pathname.startsWith("/enroll/");
+  const publicPaths = ["/", "/login", "/register", "/forgot-password", "/reset-password", "/debug"];
+  const isPublic =
+    publicPaths.some((p) => pathname === p) ||
+    pathname.startsWith("/invite/") ||
+    pathname.startsWith("/enroll/");
   const isApi = pathname.startsWith("/api/");
 
   if (isPublic || isApi) return NextResponse.next();
 
-  // Require auth for all other routes
-  if (!session?.user) {
+  const session = await getSession(req);
+
+  if (!session) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
-  const role = (session as any).role as string | undefined;
-  const disclaimerAcknowledged = (session as any).disclaimerAcknowledged as boolean;
+  const role = session.role as string | null;
+  const disclaimerAcknowledged = session.disclaimerAcknowledged as boolean;
 
   // Disclaimer gate for learners
   if (role === "LEARNER" && !disclaimerAcknowledged && pathname !== "/disclaimer") {
@@ -34,8 +53,13 @@ export default auth((req) => {
     return NextResponse.redirect(new URL("/dashboard", req.url));
   }
 
-  return NextResponse.next();
-});
+  // Pass session data via headers for layouts
+  const response = NextResponse.next();
+  response.headers.set("x-user-id", session.id);
+  response.headers.set("x-user-role", role || "");
+  response.headers.set("x-user-org-id", session.orgId || "");
+  return response;
+}
 
 export const config = {
   matcher: ["/((?!_next/static|_next/image|favicon.ico|public).*)"],

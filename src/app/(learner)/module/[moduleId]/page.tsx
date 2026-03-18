@@ -1,6 +1,6 @@
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
-import { auth } from "@/lib/auth";
+import { getSession } from "@/lib/session";
 import { getModuleWithLessons } from "@/lib/content";
 import { db } from "@/lib/db";
 import {
@@ -18,8 +18,8 @@ interface ModulePageProps {
 
 export default async function ModulePage({ params }: ModulePageProps) {
   const { moduleId } = await params;
-  const session = await auth();
-  if (!session?.user?.id) {
+  const session = await getSession();
+  if (!session) {
     redirect("/login");
   }
 
@@ -31,7 +31,7 @@ export default async function ModulePage({ params }: ModulePageProps) {
   // Get user's progress for this module
   const progress = await db.moduleProgress.findUnique({
     where: {
-      userId_moduleId: { userId: session.user.id, moduleId },
+      userId_moduleId: { userId: session.id, moduleId },
     },
   });
 

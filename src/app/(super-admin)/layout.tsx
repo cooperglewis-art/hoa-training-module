@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
-import { auth } from "@/lib/auth";
-import { db } from "@/lib/db";
+import { headers } from "next/headers";
 import { AppShell } from "@/components/layout/app-shell";
 
 export default async function SuperAdminLayout({
@@ -8,18 +7,15 @@ export default async function SuperAdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth();
+  const headersList = await headers();
+  const userId = headersList.get("x-user-id");
+  const role = headersList.get("x-user-role");
 
-  if (!session?.user?.id) {
+  if (!userId) {
     redirect("/login");
   }
 
-  const membership = await db.membership.findFirst({
-    where: { userId: session.user.id },
-    orderBy: { joinedAt: "desc" },
-  });
-
-  if (!membership || membership.role !== "SUPER_ADMIN") {
+  if (role !== "SUPER_ADMIN") {
     redirect("/dashboard");
   }
 

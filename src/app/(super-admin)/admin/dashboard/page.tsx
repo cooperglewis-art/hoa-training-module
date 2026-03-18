@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { auth } from "@/lib/auth";
+import { getSession } from "@/lib/session";
 import { redirect } from "next/navigation";
 import { StatsCard } from "@/components/admin/stats-card";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,8 +8,8 @@ import { Building2, Users, GraduationCap, TrendingUp, BarChart3 } from "lucide-r
 import { formatDate } from "@/lib/utils";
 
 export default async function SuperAdminDashboard() {
-  const session = await auth();
-  if (!session?.user?.id) redirect("/login");
+  const session = await getSession();
+  if (!session) redirect("/login");
 
   const [totalOrgs, totalLearners, totalCompletions, totalAttempts, passedAttempts, recentLogs] =
     await Promise.all([

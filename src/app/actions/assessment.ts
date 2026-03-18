@@ -1,6 +1,6 @@
 "use server";
 
-import { auth } from "@/lib/auth";
+import { getSession } from "@/lib/session";
 import { db } from "@/lib/db";
 import { generateCertificatePdf } from "@/lib/certificate";
 import { sendEmail, certificateEmailHtml } from "@/lib/email";
@@ -17,12 +17,12 @@ interface SubmitAssessmentResult {
 export async function submitAssessment(
   answers: Record<string, string>
 ): Promise<SubmitAssessmentResult> {
-  const session = await auth();
-  if (!session?.user?.id) {
+  const session = await getSession();
+  if (!session) {
     throw new Error("Unauthorized");
   }
 
-  const userId = session.user.id;
+  const userId = session.id;
 
   // Get the course and its questions
   const course = await db.course.findFirst({
@@ -130,7 +130,7 @@ export async function submitAssessment(
           attemptId: attempt.id,
           serialNumber,
           orgName,
-          userName: session.user.name || "Learner",
+          userName: session.name || "Learner",
         },
       });
 
@@ -160,16 +160,16 @@ export async function submitAssessment(
       // Generate PDF and send email
       try {
         const pdfBytes = await generateCertificatePdf({
-          userName: session.user.name || "Learner",
+          userName: session.name || "Learner",
           orgName,
           serialNumber,
           issuedAt: certificate.issuedAt,
         });
 
         await sendEmail({
-          to: session.user.email || "",
+          to: session.email || "",
           subject: "Your CCR Enforcement Training Certificate",
-          html: certificateEmailHtml(session.user.name || "Learner"),
+          html: certificateEmailHtml(session.name || "Learner"),
           templateId: "certificate",
           attachments: [
             {

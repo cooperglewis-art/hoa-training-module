@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { auth } from "@/lib/auth";
+import { getSession } from "@/lib/session";
 import { redirect } from "next/navigation";
 import { StatsCard } from "@/components/admin/stats-card";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,11 +8,11 @@ import { formatDate } from "@/lib/utils";
 import { Users, UserCheck, Clock, GraduationCap, TrendingUp } from "lucide-react";
 
 export default async function OrgDashboardPage() {
-  const session = await auth();
-  if (!session?.user?.id) redirect("/login");
+  const session = await getSession();
+  if (!session) redirect("/login");
 
   const membership = await db.membership.findFirst({
-    where: { userId: session.user.id },
+    where: { userId: session.id },
     orderBy: { joinedAt: "desc" },
     include: { org: true },
   });

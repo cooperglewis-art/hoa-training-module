@@ -1,4 +1,4 @@
-import { auth } from "@/lib/auth";
+import { getSession } from "@/lib/session";
 import { getUserProgress } from "@/lib/content";
 import { redirect } from "next/navigation";
 import Link from "next/link";
@@ -32,10 +32,10 @@ import {
 } from "lucide-react";
 
 export default async function AssessmentPage() {
-  const session = await auth();
-  if (!session?.user?.id) redirect("/login");
+  const session = await getSession();
+  if (!session) redirect("/login");
 
-  const progress = await getUserProgress(session.user.id);
+  const progress = await getUserProgress(session.id);
   if (!progress) redirect("/dashboard");
 
   const { allModulesComplete, attempts, passed, certificate, modules } =

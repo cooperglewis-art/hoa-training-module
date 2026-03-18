@@ -1,15 +1,15 @@
 "use server";
 
-import { auth } from "@/lib/auth";
+import { getSession } from "@/lib/session";
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 
 async function getSessionUserId(): Promise<string> {
-  const session = await auth();
-  if (!session?.user?.id) {
+  const session = await getSession();
+  if (!session?.id) {
     throw new Error("Unauthorized");
   }
-  return session.user.id;
+  return session.id;
 }
 
 export async function markLessonComplete(lessonId: string) {

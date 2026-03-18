@@ -2,12 +2,10 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { compare } from "bcryptjs";
 import { db } from "./db";
+import { authConfig } from "./auth.config";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  session: { strategy: "jwt" },
-  pages: {
-    signIn: "/login",
-  },
+  ...authConfig,
   providers: [
     Credentials({
       name: "credentials",
@@ -36,51 +34,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         );
         if (!isValid) return null;
 
+        const membership = user.memberships[0];
+
         return {
           id: user.id,
           email: user.email,
           name: user.name,
+          role: membership?.role || null,
+          orgId: membership?.orgId || null,
+          orgType: membership?.org?.type || null,
+          disclaimerAcknowledged: !!user.disclaimerAcknowledgedAt,
         };
       },
     }),
   ],
-  callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
-      }
-
-      if (token.id) {
-        const membership = await db.membership.findFirst({
-          where: { userId: token.id as string },
-          include: { org: true },
-          orderBy: { joinedAt: "desc" },
-        });
-
-        if (membership) {
-          token.role = membership.role;
-          token.orgId = membership.orgId;
-          token.orgType = membership.org.type;
-        }
-
-        const dbUser = await db.user.findUnique({
-          where: { id: token.id as string },
-          select: { disclaimerAcknowledgedAt: true },
-        });
-        token.disclaimerAcknowledged = !!dbUser?.disclaimerAcknowledgedAt;
-      }
-
-      return token;
-    },
-    async session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.id as string;
-        (session as any).role = token.role;
-        (session as any).orgId = token.orgId;
-        (session as any).orgType = token.orgType;
-        (session as any).disclaimerAcknowledged = token.disclaimerAcknowledged;
-      }
-      return session;
-    },
-  },
 });

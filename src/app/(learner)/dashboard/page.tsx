@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { auth } from "@/lib/auth";
+import { getSession } from "@/lib/session";
 import { getUserProgress } from "@/lib/content";
 import { ModuleCard } from "@/components/learner/module-card";
 import { ProgressRing } from "@/components/learner/progress-ring";
@@ -15,12 +15,12 @@ import Link from "next/link";
 import { APP_NAME } from "@/lib/constants";
 
 export default async function DashboardPage() {
-  const session = await auth();
-  if (!session?.user?.id) {
+  const session = await getSession();
+  if (!session) {
     redirect("/login");
   }
 
-  const progress = await getUserProgress(session.user.id);
+  const progress = await getUserProgress(session.id);
   if (!progress) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
@@ -54,7 +54,7 @@ export default async function DashboardPage() {
       <div className="mb-8 flex flex-col items-start gap-6 sm:flex-row sm:items-center">
         <div className="flex-1">
           <h1 className="text-3xl font-bold text-[var(--foreground)]">
-            Welcome back, {session.user.name?.split(" ")[0] ?? "Learner"}
+            Welcome back, {session.name?.split(" ")[0] ?? "Learner"}
           </h1>
           <p className="mt-1 text-[var(--muted-foreground)]">
             {APP_NAME} — Track your progress below.

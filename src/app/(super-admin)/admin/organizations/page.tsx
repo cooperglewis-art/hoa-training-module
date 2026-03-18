@@ -1,13 +1,13 @@
 import { db } from "@/lib/db";
-import { auth } from "@/lib/auth";
+import { getSession } from "@/lib/session";
 import { redirect } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { OrgTable } from "@/components/admin/org-table";
 import { AddOrganizationDialog } from "./add-org-dialog";
 
 export default async function OrganizationsPage() {
-  const session = await auth();
-  if (!session?.user?.id) redirect("/login");
+  const session = await getSession();
+  if (!session) redirect("/login");
 
   const organizations = await db.organization.findMany({
     orderBy: { name: "asc" },

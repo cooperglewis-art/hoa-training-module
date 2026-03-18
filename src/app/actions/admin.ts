@@ -1,19 +1,19 @@
 "use server";
 
-import { auth } from "@/lib/auth";
+import { getSession } from "@/lib/session";
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { createOrgSchema, createInviteSchema } from "@/lib/validation/admin";
 import { sendEmail, inviteEmailHtml } from "@/lib/email";
 
 async function requireRole(role: "SUPER_ADMIN" | "ORG_ADMIN") {
-  const session = await auth();
-  if (!session?.user?.id) {
+  const session = await getSession();
+  if (!session) {
     throw new Error("Unauthorized");
   }
 
   const membership = await db.membership.findFirst({
-    where: { userId: session.user.id },
+    where: { userId: session.id },
     orderBy: { joinedAt: "desc" },
   });
 
@@ -33,7 +33,7 @@ async function requireRole(role: "SUPER_ADMIN" | "ORG_ADMIN") {
     throw new Error("Forbidden: Org Admin access required");
   }
 
-  return { userId: session.user.id, membership };
+  return { userId: session.id, membership };
 }
 
 export async function createOrganization(data: {

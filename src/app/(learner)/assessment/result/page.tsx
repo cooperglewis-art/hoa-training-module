@@ -1,4 +1,4 @@
-import { auth } from "@/lib/auth";
+import { getSession } from "@/lib/session";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 import Link from "next/link";
@@ -30,8 +30,8 @@ export default async function AssessmentResultPage({
 }: {
   searchParams: Promise<{ attemptId?: string }>;
 }) {
-  const session = await auth();
-  if (!session?.user?.id) redirect("/login");
+  const session = await getSession();
+  if (!session) redirect("/login");
 
   const { attemptId } = await searchParams;
   if (!attemptId) redirect("/assessment");
@@ -43,7 +43,7 @@ export default async function AssessmentResultPage({
     },
   });
 
-  if (!attempt || attempt.userId !== session.user.id) {
+  if (!attempt || attempt.userId !== session.id) {
     redirect("/assessment");
   }
 

@@ -18,7 +18,9 @@ export default function DisclaimerPage() {
     startTransition(async () => {
       try {
         await acknowledgeDisclaimer();
-        router.push("/dashboard");
+        // Refresh the JWT so middleware sees disclaimerAcknowledged = true
+        await fetch("/api/auth/refresh-session", { method: "POST" });
+        window.location.href = "/dashboard";
       } catch {
         setError("Something went wrong. Please try again.");
       }

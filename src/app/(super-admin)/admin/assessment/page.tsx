@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { auth } from "@/lib/auth";
+import { getSession } from "@/lib/session";
 import { redirect } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -8,8 +8,8 @@ import { PASS_THRESHOLD, TOTAL_QUESTIONS } from "@/lib/constants";
 import { ClipboardList, Target, TrendingUp, BarChart3 } from "lucide-react";
 
 export default async function AssessmentPage() {
-  const session = await auth();
-  if (!session?.user?.id) redirect("/login");
+  const session = await getSession();
+  if (!session) redirect("/login");
 
   const [questions, totalAttempts, passedAttempts, allAttempts] = await Promise.all([
     db.question.findMany({

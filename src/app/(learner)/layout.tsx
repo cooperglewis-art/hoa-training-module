@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 import { db } from "@/lib/db";
 import { AppShell } from "@/components/layout/app-shell";
 
@@ -8,19 +8,20 @@ export default async function LearnerLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth();
+  const headersList = await headers();
+  const userId = headersList.get("x-user-id");
+  const role = headersList.get("x-user-role");
 
-  if (!session?.user?.id) {
+  if (!userId) {
     redirect("/login");
   }
 
-  const membership = await db.membership.findFirst({
-    where: { userId: session.user.id },
-    orderBy: { joinedAt: "desc" },
-  });
-
-  if (!membership || membership.role !== "LEARNER") {
-    redirect("/login");
+  // Redirect admins to their dashboards
+  if (role === "SUPER_ADMIN") {
+    redirect("/admin/dashboard");
+  }
+  if (role === "ORG_ADMIN") {
+    redirect("/org/dashboard");
   }
 
   return <AppShell role="LEARNER">{children}</AppShell>;
