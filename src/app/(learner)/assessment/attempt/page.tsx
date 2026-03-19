@@ -49,6 +49,28 @@ export default function AssessmentAttemptPage() {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [showConfirm, setShowConfirm] = useState(false);
 
+  // Prevent accidental navigation away during assessment
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (Object.keys(answers).length > 0 && !submitting) {
+        e.preventDefault();
+      }
+    };
+
+    // Push a state so back-button triggers popstate instead of leaving
+    window.history.pushState(null, "", window.location.href);
+    const handlePopState = () => {
+      window.history.pushState(null, "", window.location.href);
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    window.addEventListener("popstate", handlePopState);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [answers, submitting]);
+
   useEffect(() => {
     async function fetchQuestions() {
       try {

@@ -6,7 +6,7 @@
 - [ ] Add rate limiting to login, registration, and password reset endpoints
 - [ ] Add CSRF protection to custom `/api/auth/login` route (currently bypasses NextAuth CSRF)
 - [ ] Set `secure: true` on session cookie in production (currently only in `NODE_ENV=production`)
-- [ ] Add Content-Security-Policy headers
+- [x] Add Content-Security-Policy headers
 - [ ] Audit all `dangerouslySetInnerHTML` usage in ProseBlock — sanitize HTML content from DB
 - [ ] Add input sanitization on all admin content editor inputs
 - [ ] Implement account lockout after N failed login attempts
@@ -14,7 +14,7 @@
 - [ ] Rotate `NEXTAUTH_SECRET` / JWT signing key on a schedule
 - [x] Remove `/debug` page before production deployment
 - [ ] Add Supabase Row-Level Security policies for multi-tenant data isolation
-- [ ] Ensure certificate download route validates org membership (not just user ownership)
+- [x] Ensure certificate download route validates org membership (not just user ownership)
 
 ## Auth & Session
 - [ ] Session refresh: JWT doesn't update when role/org changes — add periodic refresh or short expiry with refresh token
@@ -25,7 +25,7 @@
 
 ## UI/UX Polish
 - [ ] Add loading skeletons for all server component pages (currently blank while loading)
-- [ ] Add breadcrumb navigation on lesson pages showing Module > Lesson
+- [x] Add breadcrumb navigation on lesson pages showing Module > Lesson
 - [ ] Improve mobile responsiveness — test on iPhone/iPad breakpoints
 - [ ] Add keyboard navigation support for drag-drop-match exercises
 - [ ] Add progress save indicator ("Your progress is saved") on lesson pages
@@ -39,7 +39,7 @@
 
 ## Content & Learning
 - [ ] Review all lesson content for legal accuracy with actual Texas attorney
-- [ ] Add estimated reading time per lesson
+- [x] Add estimated reading time per lesson
 - [ ] Add lesson bookmarking / "pick up where you left off"
 - [ ] Module progress should prevent skipping lessons within a module (enforce linear order)
 - [ ] Add "Knowledge Check" review mode — let learners re-take in-lesson quizzes without resetting progress
@@ -51,7 +51,7 @@
 ## Assessment
 - [x] Randomize question order and answer option order per attempt
 - [ ] Add timer option for assessment (configurable by admin)
-- [ ] Prevent browser back-button during assessment attempt
+- [x] Prevent browser back-button during assessment attempt
 - [x] Add "Are you sure?" confirmation before submitting assessment
 - [ ] Track time spent per question for analytics
 

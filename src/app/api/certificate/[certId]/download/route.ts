@@ -22,13 +22,27 @@ export async function GET(
     return NextResponse.json({ error: "Certificate not found" }, { status: 404 });
   }
 
-  // Only allow the certificate owner or admins to download
+  // Only allow the certificate owner or org admins/super admins to download
   const membership = await db.membership.findFirst({
     where: { userId: session.id },
   });
 
-  if (certificate.userId !== session.id && membership?.role === "LEARNER") {
+  if (!membership) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
+  if (certificate.userId !== session.id) {
+    // Non-owners must be an admin, and must belong to the same org
+    if (membership.role === "LEARNER") {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+    // Verify the certificate owner is in the same org as the requesting admin
+    const certOwnerMembership = await db.membership.findFirst({
+      where: { userId: certificate.userId, orgId: membership.orgId },
+    });
+    if (!certOwnerMembership && membership.role !== "SUPER_ADMIN") {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
   }
 
   const pdfBytes = await generateCertificatePdf({

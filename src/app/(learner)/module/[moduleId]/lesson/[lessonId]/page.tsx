@@ -1,11 +1,11 @@
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { getSession } from "@/lib/session";
-import { getPublishedContent, getModuleWithLessons } from "@/lib/content";
+import { getPublishedContent, getModuleWithLessons, estimateReadingTime } from "@/lib/content";
 import { db } from "@/lib/db";
 import { LessonRenderer } from "@/components/lesson/LessonRenderer";
 import { LessonNav } from "@/components/lesson/LessonNav";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Clock } from "lucide-react";
 import type { OrgType } from "@/types/content";
 
 interface LessonPageProps {
@@ -80,10 +80,18 @@ export default async function LessonPage({ params }: LessonPageProps) {
 
       {/* Lesson header */}
       <div className="mb-8">
-        <p className="text-sm font-medium text-[var(--primary)]">
-          Module {moduleData.sortOrder} — Lesson {lessonIndex + 1} of{" "}
-          {moduleData.lessons.length}
-        </p>
+        <div className="flex items-center gap-3 text-sm font-medium text-[var(--primary)]">
+          <span>
+            Module {moduleData.sortOrder} — Lesson {lessonIndex + 1} of{" "}
+            {moduleData.lessons.length}
+          </span>
+          {content && (
+            <span className="inline-flex items-center gap-1 text-[var(--muted-foreground)] font-normal">
+              <Clock className="h-3.5 w-3.5" />
+              {estimateReadingTime(content.blocks)} min read
+            </span>
+          )}
+        </div>
         <h1 className="mt-1 text-3xl font-bold text-[var(--foreground)]">
           {currentLesson.title}
         </h1>
