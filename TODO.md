@@ -19,8 +19,8 @@
 ## Auth & Session
 - [ ] Session refresh: JWT doesn't update when role/org changes — add periodic refresh or short expiry with refresh token
 - [ ] Register flow: users who register without an invite/org link have no membership — add org selection step or block direct registration
-- [ ] Add "Remember me" option on login (shorter vs longer JWT expiry)
-- [ ] Password strength meter on registration form
+- [x] Add "Remember me" option on login (shorter vs longer JWT expiry)
+- [x] Password strength meter on registration form
 - [ ] Add OAuth providers (Google, Microsoft) for enterprise SSO
 
 ## UI/UX Polish
@@ -34,7 +34,7 @@
 - [ ] Toast notifications for success/error states on all forms
 - [x] Add "Back to Dashboard" button on all inner pages
 - [ ] Dark mode support (CSS variables are set up but no toggle exists)
-- [ ] Add print-friendly styles for certificate page
+- [x] Add print-friendly styles for certificate page
 - [ ] Improve empty states for admin pages with no data
 
 ## Content & Learning

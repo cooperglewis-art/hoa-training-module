@@ -10,7 +10,7 @@ const secret = new TextEncoder().encode(
 
 export async function POST(request: Request) {
   try {
-    const { email, password } = await request.json();
+    const { email, password, rememberMe } = await request.json();
 
     if (!email || !password) {
       return NextResponse.json(
@@ -46,6 +46,9 @@ export async function POST(request: Request) {
 
     const membership = user.memberships[0];
 
+    // Session duration: 30 days if "remember me", 1 day otherwise
+    const sessionDays = rememberMe ? 30 : 1;
+
     // Create a JWT token matching NextAuth's format
     const token = await new SignJWT({
       id: user.id,
@@ -59,7 +62,7 @@ export async function POST(request: Request) {
     })
       .setProtectedHeader({ alg: "HS256" })
       .setIssuedAt()
-      .setExpirationTime("30d")
+      .setExpirationTime(`${sessionDays}d`)
       .sign(secret);
 
     // Set the session cookie
@@ -69,7 +72,7 @@ export async function POST(request: Request) {
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/",
-      maxAge: 60 * 60 * 24 * 30, // 30 days
+      maxAge: 60 * 60 * 24 * sessionDays,
     });
 
     // Log login

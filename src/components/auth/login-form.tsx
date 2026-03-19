@@ -26,12 +26,13 @@ export function LoginForm() {
     const formData = new FormData(e.currentTarget);
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
+    const rememberMe = formData.get("rememberMe") === "on";
 
     try {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, rememberMe }),
       });
 
       const data = await res.json();
@@ -97,6 +98,17 @@ export function LoginForm() {
               disabled={isLoading}
               required
             />
+          </div>
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="rememberMe"
+              name="rememberMe"
+              className="h-4 w-4 rounded border-gray-300 text-[var(--primary)] focus:ring-[var(--ring)]"
+            />
+            <Label htmlFor="rememberMe" className="text-sm font-normal cursor-pointer">
+              Remember me for 30 days
+            </Label>
           </div>
         </CardContent>
         <CardFooter className="flex flex-col gap-4">

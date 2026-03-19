@@ -6,6 +6,7 @@ import { formatDate } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { CertificatePreview } from "@/components/certificate/certificate-preview";
 import { Download, ArrowLeft } from "lucide-react";
+import { PrintButton } from "@/components/certificate/print-button";
 
 export default async function CertificatePage({
   params,
@@ -38,40 +39,59 @@ export default async function CertificatePage({
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
-      <div className="mb-6 flex items-center justify-between">
-        <Button asChild variant="ghost" size="sm">
-          <Link href="/assessment">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Assessment
-          </Link>
-        </Button>
-      </div>
+    <>
+      <style>{`
+        @media print {
+          body * { visibility: hidden; }
+          #certificate-print, #certificate-print * { visibility: visible; }
+          #certificate-print {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+          }
+        }
+      `}</style>
+      <div className="mx-auto max-w-3xl px-4 py-8">
+        <div className="mb-6 flex items-center justify-between print:hidden">
+          <Button asChild variant="ghost" size="sm">
+            <Link href="/assessment">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Assessment
+            </Link>
+          </Button>
+        </div>
 
-      <div className="mb-8 text-center">
-        <h1 className="font-serif text-2xl font-bold text-[#002060]">
-          Your Certificate
-        </h1>
-        <p className="mt-1 text-sm text-[var(--muted-foreground)]">
-          Issued on {formatDate(certificate.issuedAt)} &middot; Serial #{certificate.serialNumber}
-        </p>
-      </div>
+        <div className="mb-8 text-center print:hidden">
+          <h1 className="font-serif text-2xl font-bold text-[#002060]">
+            Your Certificate
+          </h1>
+          <p className="mt-1 text-sm text-[var(--muted-foreground)]">
+            Issued on {formatDate(certificate.issuedAt)} &middot; Serial #{certificate.serialNumber}
+          </p>
+        </div>
 
-      <CertificatePreview
-        userName={certificate.userName}
-        orgName={certificate.orgName}
-        serialNumber={certificate.serialNumber}
-        issuedAt={certificate.issuedAt}
-      />
+        <div id="certificate-print">
+          <CertificatePreview
+            userName={certificate.userName}
+            orgName={certificate.orgName}
+            serialNumber={certificate.serialNumber}
+            issuedAt={certificate.issuedAt}
+          />
+        </div>
 
-      <div className="mt-8 flex justify-center">
-        <Button asChild size="lg" className="bg-[#002060] hover:bg-[#002060]/90">
-          <a href={`/api/certificate/${certId}/download`}>
-            <Download className="mr-2 h-4 w-4" />
-            Download PDF
-          </a>
-        </Button>
+        <div className="mt-8 flex justify-center gap-3 print:hidden">
+          <Button asChild size="lg" className="bg-[#002060] hover:bg-[#002060]/90">
+            <a href={`/api/certificate/${certId}/download`}>
+              <Download className="mr-2 h-4 w-4" />
+              Download PDF
+            </a>
+          </Button>
+          <PrintButton />
+        </div>
       </div>
-    </div>
+    </>
   );
 }

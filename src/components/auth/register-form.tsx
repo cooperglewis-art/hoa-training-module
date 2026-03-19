@@ -17,6 +17,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
+import { PasswordStrength } from "@/components/auth/password-strength";
 
 interface RegisterFormProps {
   inviteToken?: string;
@@ -28,6 +29,7 @@ export function RegisterForm({ inviteToken, orgSlug, orgName }: RegisterFormProp
   const router = useRouter();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<Partial<Record<keyof RegisterInput, string>>>({});
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -157,7 +159,9 @@ export function RegisterForm({ inviteToken, orgSlug, orgName }: RegisterFormProp
               placeholder="Minimum 8 characters"
               autoComplete="new-password"
               disabled={isLoading}
+              onChange={(e) => setPassword(e.target.value)}
             />
+            <PasswordStrength password={password} />
             {errors.password && (
               <p className="text-sm text-destructive">{errors.password}</p>
             )}
