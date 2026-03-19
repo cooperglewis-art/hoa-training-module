@@ -13,6 +13,14 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { submitAssessment } from "@/app/actions/assessment";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { AlertCircle, Send } from "lucide-react";
 
 interface AnswerOption {
@@ -39,6 +47,7 @@ export default function AssessmentAttemptPage() {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   useEffect(() => {
     async function fetchQuestions() {
@@ -158,7 +167,7 @@ export default function AssessmentAttemptPage() {
         )}
 
         <Button
-          onClick={handleSubmit}
+          onClick={() => setShowConfirm(true)}
           disabled={!allAnswered || submitting}
           className="w-full"
           size="lg"
@@ -183,6 +192,33 @@ export default function AssessmentAttemptPage() {
           </p>
         )}
       </div>
+
+      {/* Confirmation Dialog */}
+      <Dialog open={showConfirm} onOpenChange={setShowConfirm}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Submit Assessment?</DialogTitle>
+            <DialogDescription>
+              You are about to submit your final answers. Once submitted, this
+              attempt will be graded and cannot be changed. Are you sure you want
+              to continue?
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowConfirm(false)}>
+              Go Back
+            </Button>
+            <Button
+              onClick={() => {
+                setShowConfirm(false);
+                handleSubmit();
+              }}
+            >
+              Yes, Submit
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

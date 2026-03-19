@@ -236,6 +236,9 @@ model AssessmentAttempt {
   course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   certificate Certificate?
+
+  @@index([userId])
+  @@index([courseId])
 }
 
 model CourseCompletion {
@@ -261,6 +264,8 @@ model Certificate {
   user      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   attemptId String            @unique
   attempt   AssessmentAttempt  @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model AuditLog {
@@ -273,6 +278,10 @@ model AuditLog {
   actor   User?         @relation("AuditActor", fields: [actorId], references: [id], onDelete: SetNull)
   orgId   String?
   org     Organization? @relation(fields: [orgId], references: [id], onDelete: SetNull)
+
+  @@index([actorId])
+  @@index([orgId])
+  @@index([action])
 }
 
 model EmailLog {

@@ -164,6 +164,9 @@ export default async function AssessmentResultPage({
         <Button asChild variant="outline" className="flex-1" size="lg">
           <Link href="/assessment">Back to Assessment</Link>
         </Button>
+        <Button asChild variant="ghost" className="flex-1" size="lg">
+          <Link href="/dashboard">Back to Dashboard</Link>
+        </Button>
       </div>
     </div>
   );

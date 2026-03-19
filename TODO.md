@@ -12,7 +12,7 @@
 - [ ] Implement account lockout after N failed login attempts
 - [ ] Add email verification flow (currently `emailVerified` field is unused)
 - [ ] Rotate `NEXTAUTH_SECRET` / JWT signing key on a schedule
-- [ ] Remove `/debug` page before production deployment
+- [x] Remove `/debug` page before production deployment
 - [ ] Add Supabase Row-Level Security policies for multi-tenant data isolation
 - [ ] Ensure certificate download route validates org membership (not just user ownership)
 
@@ -32,7 +32,7 @@
 - [ ] Animate module unlock transitions on dashboard
 - [ ] Add confetti animation on assessment pass (currently only in result-animation component, verify it renders)
 - [ ] Toast notifications for success/error states on all forms
-- [ ] Add "Back to Dashboard" button on all inner pages
+- [x] Add "Back to Dashboard" button on all inner pages
 - [ ] Dark mode support (CSS variables are set up but no toggle exists)
 - [ ] Add print-friendly styles for certificate page
 - [ ] Improve empty states for admin pages with no data
@@ -49,10 +49,10 @@
 - [ ] Content versioning: show learners when content has been updated since they last viewed it
 
 ## Assessment
-- [ ] Randomize question order and answer option order per attempt
+- [x] Randomize question order and answer option order per attempt
 - [ ] Add timer option for assessment (configurable by admin)
 - [ ] Prevent browser back-button during assessment attempt
-- [ ] Add "Are you sure?" confirmation before submitting assessment
+- [x] Add "Are you sure?" confirmation before submitting assessment
 - [ ] Track time spent per question for analytics
 
 ## Certificate
@@ -85,7 +85,7 @@
 - [ ] Add error monitoring (Sentry or similar)
 - [ ] Add analytics (PostHog, Mixpanel, or similar)
 - [ ] Set up database backups
-- [ ] Add health check endpoint
+- [x] Add health check endpoint
 - [ ] Configure proper logging (structured JSON logs)
 - [ ] Load testing for concurrent assessment submissions
 
@@ -99,7 +99,7 @@
 - [ ] Cross-browser testing (Safari, Firefox, Edge)
 
 ## Performance
-- [ ] Add database indexes for common queries (userId+moduleId on ModuleProgress, etc.)
+- [x] Add database indexes for common queries (userId+moduleId on ModuleProgress, etc.)
 - [ ] Cache course structure data (doesn't change often)
 - [ ] Optimize lesson content loading — only fetch published version
 - [ ] Add ISR (Incremental Static Regeneration) for public pages

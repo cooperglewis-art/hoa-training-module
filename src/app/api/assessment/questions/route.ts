@@ -2,6 +2,15 @@ import { NextResponse } from "next/server";
 import { getSession } from "@/lib/session";
 import { db } from "@/lib/db";
 
+function shuffle<T>(array: T[]): T[] {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
 export async function GET() {
   const session = await getSession();
   if (!session?.id) {
@@ -76,10 +85,10 @@ export async function GET() {
 
   return NextResponse.json({
     scenario,
-    questions: questions.map((q) => ({
+    questions: shuffle(questions).map((q) => ({
       id: q.id,
       stem: q.stem,
-      answerOptions: q.answerOptions,
+      answerOptions: shuffle(q.answerOptions),
     })),
   });
 }

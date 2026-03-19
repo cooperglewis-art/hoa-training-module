@@ -60,14 +60,23 @@ export default async function LessonPage({ params }: LessonPageProps) {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
-      {/* Back link */}
-      <Link
-        href={`/module/${moduleId}`}
-        className="mb-6 inline-flex items-center gap-1.5 text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        Back to {moduleData.title}
-      </Link>
+      {/* Back links */}
+      <div className="mb-6 flex items-center gap-4 text-sm text-[var(--muted-foreground)]">
+        <Link
+          href="/dashboard"
+          className="inline-flex items-center gap-1.5 hover:text-[var(--foreground)] transition-colors"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Dashboard
+        </Link>
+        <span>/</span>
+        <Link
+          href={`/module/${moduleId}`}
+          className="hover:text-[var(--foreground)] transition-colors"
+        >
+          {moduleData.title}
+        </Link>
+      </div>
 
       {/* Lesson header */}
       <div className="mb-8">
