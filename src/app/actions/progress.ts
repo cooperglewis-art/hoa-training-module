@@ -3,6 +3,7 @@
 import { getSession } from "@/lib/session";
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
+import type { ContentBlock } from "@/types/content";
 
 async function getSessionUserId(): Promise<string> {
   const session = await getSession();
@@ -10,6 +11,43 @@ async function getSessionUserId(): Promise<string> {
     throw new Error("Unauthorized");
   }
   return session.id;
+}
+
+function extractRequiredGateKeys(lessonId: string, content: ContentBlock[]): string[] {
+  return content.flatMap((block, index) => {
+    const requiresGate =
+      (block.type === "knowledge-check" || block.type === "checkpoint") &&
+      !!block.gateNext;
+    if (!requiresGate) {
+      return [];
+    }
+    return [`${lessonId}:${index}`];
+  });
+}
+
+async function getRequiredGateKeysForLesson(lessonId: string): Promise<string[]> {
+  const version = await db.lessonContentVersion.findFirst({
+    where: {
+      lessonId,
+      publishedAt: { not: null },
+    },
+    orderBy: { version: "desc" },
+    select: { content: true },
+  });
+
+  if (!version) {
+    return [];
+  }
+
+  const raw = version.content as unknown;
+  const content =
+    Array.isArray(raw)
+      ? (raw as ContentBlock[])
+      : raw && typeof raw === "object" && "blocks" in raw
+        ? ((raw as { blocks: ContentBlock[] }).blocks ?? [])
+        : [];
+
+  return extractRequiredGateKeys(lessonId, content);
 }
 
 export async function markLessonComplete(lessonId: string) {
@@ -32,6 +70,17 @@ export async function markLessonComplete(lessonId: string) {
 
   const moduleId = lesson.moduleId;
   const allLessonIds = lesson.module.lessons.map((l) => l.id);
+  const requiredGateKeys = await getRequiredGateKeysForLesson(lessonId);
+  const existingProgress = await db.moduleProgress.findUnique({
+    where: { userId_moduleId: { userId, moduleId } },
+    select: { passedGateKeys: true },
+  });
+
+  const passedGateKeys = new Set(existingProgress?.passedGateKeys ?? []);
+  const missingGateKeys = requiredGateKeys.filter((key) => !passedGateKeys.has(key));
+  if (missingGateKeys.length > 0) {
+    throw new Error("Complete all required lesson checks before continuing.");
+  }
 
   const progress = await db.moduleProgress.upsert({
     where: {
@@ -88,24 +137,47 @@ export async function markLessonComplete(lessonId: string) {
   revalidatePath(`/module/${moduleId}/lesson/${lessonId}`);
 }
 
-export async function passCheckpoint(moduleId: string) {
+export async function recordGateCheckPassed(lessonId: string, gateKey: string) {
   const userId = await getSessionUserId();
+  const lesson = await db.lesson.findUnique({
+    where: { id: lessonId },
+    select: { moduleId: true },
+  });
 
-  await db.moduleProgress.upsert({
+  if (!lesson) {
+    throw new Error("Lesson not found");
+  }
+
+  const requiredGateKeys = await getRequiredGateKeysForLesson(lessonId);
+  if (!requiredGateKeys.includes(gateKey)) {
+    throw new Error("Invalid gate check.");
+  }
+
+  const progress = await db.moduleProgress.upsert({
     where: {
-      userId_moduleId: { userId, moduleId },
+      userId_moduleId: { userId, moduleId: lesson.moduleId },
     },
     create: {
       userId,
-      moduleId,
-      checkpointsPassed: 1,
+      moduleId: lesson.moduleId,
+      passedGateKeys: [gateKey],
     },
     update: {
-      checkpointsPassed: { increment: 1 },
+      passedGateKeys: {
+        push: gateKey,
+      },
     },
   });
 
-  revalidatePath(`/module/${moduleId}`);
+  const uniqueGateKeys = [...new Set(progress.passedGateKeys)];
+  if (uniqueGateKeys.length !== progress.passedGateKeys.length) {
+    await db.moduleProgress.update({
+      where: { id: progress.id },
+      data: { passedGateKeys: uniqueGateKeys },
+    });
+  }
+
+  revalidatePath(`/module/${lesson.moduleId}/lesson/${lessonId}`);
 }
 
 export async function acknowledgeDisclaimer() {

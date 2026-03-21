@@ -15,6 +15,7 @@ import {
 import { createInvite } from "@/app/actions/admin";
 import { useToast } from "@/hooks/use-toast";
 import { UserPlus } from "lucide-react";
+import { CopyLinkButton } from "./copy-link-button";
 
 interface CreateInviteFormProps {
   orgId: string;
@@ -26,6 +27,7 @@ export function CreateInviteForm({ orgId }: CreateInviteFormProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [openInviteUrl, setOpenInviteUrl] = useState<string | null>(null);
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -33,6 +35,7 @@ export function CreateInviteForm({ orgId }: CreateInviteFormProps) {
     setLoading(true);
     setError(null);
     setSuccess(null);
+    setOpenInviteUrl(null);
 
     try {
       const invite = await createInvite({
@@ -40,10 +43,14 @@ export function CreateInviteForm({ orgId }: CreateInviteFormProps) {
         role,
         orgId,
       });
+      const inviteUrl = `${window.location.origin}/invite/${invite.token}`;
       const msg = email
         ? `Invite sent to ${email}`
         : `Open invite link created. Share the link with your learners.`;
       setSuccess(msg);
+      if (!email) {
+        setOpenInviteUrl(inviteUrl);
+      }
       toast({ title: "Invite created", description: msg });
       setEmail("");
     } catch (err) {
@@ -68,6 +75,12 @@ export function CreateInviteForm({ orgId }: CreateInviteFormProps) {
           {error && <p className="text-sm text-red-600 bg-red-50 p-2 rounded">{error}</p>}
           {success && (
             <p className="text-sm text-emerald-600 bg-emerald-50 p-2 rounded">{success}</p>
+          )}
+          {openInviteUrl && (
+            <div className="rounded border border-emerald-200 bg-emerald-50/70 p-2">
+              <p className="mb-2 text-xs text-emerald-700 break-all">{openInviteUrl}</p>
+              <CopyLinkButton url={openInviteUrl} />
+            </div>
           )}
 
           <div className="grid gap-2">

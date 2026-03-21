@@ -3,13 +3,6 @@ import Link from "next/link";
 import { getSession } from "@/lib/session";
 import { getModuleWithLessons } from "@/lib/content";
 import { db } from "@/lib/db";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "@/components/ui/card";
 import { Check, ArrowLeft, ArrowRight } from "lucide-react";
 
 interface ModulePageProps {

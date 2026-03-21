@@ -18,26 +18,31 @@ export default async function OrganizationsPage() {
     },
   });
 
-  // Calculate completion rates
-  const orgsWithRates = await Promise.all(
-    organizations.map(async (org) => {
-      const learnerCount = org._count.memberships;
-      if (learnerCount === 0) {
-        return { ...org, completionRate: undefined };
-      }
-      const completions = await db.courseCompletion.count({
-        where: {
-          user: {
-            memberships: { some: { orgId: org.id, role: "LEARNER" } },
-          },
-        },
-      });
-      return {
-        ...org,
-        completionRate: Math.round((completions / learnerCount) * 100),
-      };
-    })
+  // Calculate completion rates in one query to avoid N+1 counts.
+  const completionRows = await db.$queryRaw<Array<{ orgId: string; completions: bigint }>>`
+    SELECT m."orgId" AS "orgId", COUNT(DISTINCT cc."userId")::bigint AS completions
+    FROM "CourseCompletion" cc
+    JOIN "Membership" m ON m."userId" = cc."userId"
+    WHERE m."role" = 'LEARNER'
+    GROUP BY m."orgId"
+  `;
+
+  const completionsByOrgId = new Map<string, number>(
+    completionRows.map((row) => [row.orgId, Number(row.completions)])
   );
+
+  const orgsWithRates = organizations.map((org) => {
+    const learnerCount = org._count.memberships;
+    if (learnerCount === 0) {
+      return { ...org, completionRate: undefined };
+    }
+
+    const completions = completionsByOrgId.get(org.id) ?? 0;
+    return {
+      ...org,
+      completionRate: Math.round((completions / learnerCount) * 100),
+    };
+  });
 
   return (
     <div className="space-y-6">

@@ -4,6 +4,20 @@ import { db } from "./db";
 const resend = new Resend(process.env.RESEND_API_KEY);
 const fromEmail = process.env.RESEND_FROM_EMAIL || "noreply@example.com";
 
+function getAppUrl(): string {
+  const explicitUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXTAUTH_URL;
+  if (explicitUrl) {
+    return explicitUrl.replace(/\/+$/, "");
+  }
+
+  const vercelUrl = process.env.VERCEL_URL;
+  if (vercelUrl) {
+    return `https://${vercelUrl.replace(/\/+$/, "")}`;
+  }
+
+  return "http://localhost:3000";
+}
+
 interface SendEmailOptions {
   to: string;
   subject: string;
@@ -58,24 +72,26 @@ export function inviteEmailHtml(orgName: string, inviteUrl: string) {
 }
 
 export function welcomeEmailHtml(name: string) {
+  const appUrl = getAppUrl();
   return `
     <div style="font-family: Georgia, serif; max-width: 600px; margin: 0 auto;">
       <h1 style="color: #002060;">Welcome to CCR Enforcement Training</h1>
       <p>Hello ${name},</p>
       <p>Your account has been created successfully. You can now log in and begin your training.</p>
       <p>The program consists of 3 interactive modules followed by a case study assessment. Upon passing, you'll receive a certificate of completion.</p>
-      <a href="${process.env.NEXT_PUBLIC_APP_URL}/login" style="display: inline-block; background: #737852; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 16px 0;">Log In</a>
+      <a href="${appUrl}/login" style="display: inline-block; background: #737852; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 16px 0;">Log In</a>
     </div>
   `;
 }
 
 export function certificateEmailHtml(name: string) {
+  const appUrl = getAppUrl();
   return `
     <div style="font-family: Georgia, serif; max-width: 600px; margin: 0 auto;">
       <h1 style="color: #002060;">Congratulations, ${name}!</h1>
       <p>You have successfully completed the CCR Enforcement Training program.</p>
       <p>Your certificate of completion is attached to this email. You can also download it from your dashboard at any time.</p>
-      <a href="${process.env.NEXT_PUBLIC_APP_URL}/dashboard" style="display: inline-block; background: #737852; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 16px 0;">View Dashboard</a>
+      <a href="${appUrl}/dashboard" style="display: inline-block; background: #737852; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 16px 0;">View Dashboard</a>
     </div>
   `;
 }

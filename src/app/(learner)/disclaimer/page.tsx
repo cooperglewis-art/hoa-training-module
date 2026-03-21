@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
 import { DISCLAIMER_TEXT, APP_NAME } from "@/lib/constants";
 import { acknowledgeDisclaimer } from "@/app/actions/progress";
 import { Button } from "@/components/ui/button";
@@ -11,7 +10,6 @@ export default function DisclaimerPage() {
   const [accepted, setAccepted] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
 
   function handleSubmit() {
     setError(null);

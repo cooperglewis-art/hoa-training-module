@@ -27,7 +27,6 @@ import {
   ClipboardCheck,
   Trophy,
   ArrowRight,
-  CheckCircle2,
   XCircle,
 } from "lucide-react";
 

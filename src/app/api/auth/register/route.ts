@@ -7,7 +7,7 @@ import { rateLimitByIp } from "@/lib/rate-limit";
 
 export async function POST(request: Request) {
   try {
-    if (!rateLimitByIp(request, 5, 60_000)) {
+    if (!(await rateLimitByIp(request, "auth:register", 5, 60_000))) {
       return NextResponse.json(
         { error: "Too many registration attempts. Please try again in a minute." },
         { status: 429 }
@@ -29,20 +29,26 @@ export async function POST(request: Request) {
       inviteToken?: string;
       orgSlug?: string;
     };
+    const normalizedInviteToken = inviteToken?.trim() || undefined;
+    const normalizedOrgSlug = orgSlug?.trim() || undefined;
 
     // Require org context — no naked self-registration
-    if (!inviteToken && !orgSlug) {
+    if (!normalizedInviteToken && !normalizedOrgSlug) {
       return NextResponse.json(
         { error: "Registration requires an invite link or organization enrollment link." },
         { status: 400 }
       );
     }
 
-    // Check if user already exists
-    const existingUser = await db.user.findUnique({
-      where: { email },
-    });
+    if (normalizedInviteToken && normalizedOrgSlug) {
+      return NextResponse.json(
+        { error: "Use either an invite link or an enrollment link, not both." },
+        { status: 400 }
+      );
+    }
 
+    // Check if user already exists
+    const existingUser = await db.user.findUnique({ where: { email } });
     if (existingUser) {
       return NextResponse.json(
         { error: "An account with this email already exists." },
@@ -50,29 +56,77 @@ export async function POST(request: Request) {
       );
     }
 
+    const now = new Date();
+    const invite = normalizedInviteToken
+      ? await db.inviteToken.findUnique({
+          where: { token: normalizedInviteToken },
+          include: { org: true },
+        })
+      : null;
+    const org = normalizedOrgSlug
+      ? await db.organization.findUnique({
+          where: { slug: normalizedOrgSlug },
+        })
+      : null;
+
+    if (normalizedInviteToken) {
+      if (!invite || invite.usedAt || now > invite.expiresAt) {
+        return NextResponse.json(
+          { error: "This invite link is invalid or expired." },
+          { status: 400 }
+        );
+      }
+      if (
+        invite.email &&
+        invite.email.toLowerCase() !== email.toLowerCase()
+      ) {
+        return NextResponse.json(
+          { error: "This invite was issued for a different email address." },
+          { status: 400 }
+        );
+      }
+      if (!invite.org.active) {
+        return NextResponse.json(
+          { error: "This organization is not currently accepting enrollments." },
+          { status: 400 }
+        );
+      }
+    }
+
+    if (normalizedOrgSlug) {
+      if (!org || !org.active) {
+        return NextResponse.json(
+          { error: "This enrollment link is invalid or inactive." },
+          { status: 400 }
+        );
+      }
+    }
+
     const passwordHash = await hash(password, 12);
 
-    // Create user
-    const user = await db.user.create({
-      data: {
-        name,
-        email,
-        passwordHash,
-      },
-    });
-
-    // Handle invite token
-    if (inviteToken) {
-      const invite = await db.inviteToken.findUnique({
-        where: { token: inviteToken },
-        include: { org: true },
+    await db.$transaction(async (tx) => {
+      const user = await tx.user.create({
+        data: {
+          name,
+          email,
+          passwordHash,
+        },
       });
 
-      if (!invite || invite.usedAt || new Date() > invite.expiresAt) {
-        // User created but invite invalid -- still allow registration
-        // but don't create membership
-      } else {
-        await db.membership.create({
+      if (invite) {
+        const currentInvite = await tx.inviteToken.findUnique({
+          where: { id: invite.id },
+        });
+
+        if (
+          !currentInvite ||
+          currentInvite.usedAt ||
+          new Date() > currentInvite.expiresAt
+        ) {
+          throw new Error("INVITE_NO_LONGER_VALID");
+        }
+
+        await tx.membership.create({
           data: {
             userId: user.id,
             orgId: invite.orgId,
@@ -80,41 +134,35 @@ export async function POST(request: Request) {
           },
         });
 
-        await db.inviteToken.update({
+        await tx.inviteToken.update({
           where: { id: invite.id },
           data: { usedAt: new Date() },
         });
-      }
-    }
-
-    // Handle org slug enrollment
-    if (orgSlug && !inviteToken) {
-      const org = await db.organization.findUnique({
-        where: { slug: orgSlug },
-      });
-
-      if (org && org.active) {
-        await db.membership.create({
+      } else if (org) {
+        await tx.membership.create({
           data: {
             userId: user.id,
             orgId: org.id,
             role: "LEARNER",
           },
         });
+      } else {
+        throw new Error("MISSING_ENROLLMENT_CONTEXT");
       }
-    }
 
-    // Log registration
-    await db.auditLog.create({
-      data: {
-        action: "USER_REGISTERED",
-        actorId: user.id,
-        metadata: {
-          email: user.email,
-          inviteToken: inviteToken || null,
-          orgSlug: orgSlug || null,
+      await tx.auditLog.create({
+        data: {
+          action: "USER_REGISTERED",
+          actorId: user.id,
+          metadata: {
+            email: user.email,
+            inviteToken: normalizedInviteToken || null,
+            orgSlug: normalizedOrgSlug || null,
+          },
         },
-      },
+      });
+
+      return user;
     });
 
     // Send welcome email
@@ -127,6 +175,12 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true }, { status: 201 });
   } catch (error) {
+    if (error instanceof Error && error.message === "INVITE_NO_LONGER_VALID") {
+      return NextResponse.json(
+        { error: "This invite link is no longer valid. Please request a new invite." },
+        { status: 400 }
+      );
+    }
     console.error("Registration error:", error);
     return NextResponse.json(
       { error: "An unexpected error occurred. Please try again." },

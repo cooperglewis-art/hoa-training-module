@@ -118,9 +118,13 @@ export async function submitAssessment(
       // Get org name for certificate
       const membership = await db.membership.findFirst({
         where: { userId },
+        orderBy: { joinedAt: "desc" },
         include: { org: true },
       });
-      const orgName = membership?.org.name || "Independent Learner";
+      if (!membership) {
+        throw new Error("No organization membership found for this learner.");
+      }
+      const orgName = membership.org.name;
 
       // Create certificate
       const serialNumber = generateSerialNumber();
@@ -139,7 +143,7 @@ export async function submitAssessment(
         data: {
           action: "CERTIFICATE_ISSUED",
           actorId: userId,
-          orgId: membership?.orgId,
+          orgId: membership.orgId,
           metadata: {
             certificateId: certificate.id,
             serialNumber,
@@ -152,7 +156,7 @@ export async function submitAssessment(
         data: {
           action: "ASSESSMENT_PASSED",
           actorId: userId,
-          orgId: membership?.orgId,
+          orgId: membership.orgId,
           metadata: { attemptId: attempt.id, score },
         },
       });

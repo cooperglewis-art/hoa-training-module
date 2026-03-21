@@ -1,7 +1,6 @@
 "use client";
 
 import { useSession } from "@/components/auth/session-provider";
-import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { Menu, LogOut, User, Moon, Sun } from "lucide-react";
 import { useTheme } from "@/components/theme-provider";
@@ -42,7 +41,6 @@ export function Topbar({ onMobileMenuToggle, className }: TopbarProps) {
   const { user } = useSession();
   const { theme, toggleTheme } = useTheme();
   const pathname = usePathname();
-  const router = useRouter();
   const breadcrumbs = generateBreadcrumbs(pathname);
 
   const userInitials = user?.name

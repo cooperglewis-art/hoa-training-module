@@ -9,7 +9,6 @@ import {
   CardHeader,
   CardTitle,
   CardContent,
-  CardFooter,
 } from "@/components/ui/card";
 import { ResultCard } from "@/components/assessment/result-card";
 import { AssessmentResultAnimation } from "@/components/assessment/result-animation";

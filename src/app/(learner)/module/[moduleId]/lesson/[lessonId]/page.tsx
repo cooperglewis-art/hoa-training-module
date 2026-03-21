@@ -106,7 +106,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
 
       {/* Content */}
       {content ? (
-        <LessonRenderer blocks={content} orgType={orgType} />
+        <LessonRenderer blocks={content} orgType={orgType} lessonId={lessonId} />
       ) : (
         <div className="rounded-lg border border-[var(--border)] bg-[var(--muted)] p-8 text-center">
           <p className="text-[var(--muted-foreground)]">

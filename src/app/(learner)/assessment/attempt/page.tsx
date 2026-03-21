@@ -5,13 +5,7 @@ import { useRouter } from "next/navigation";
 import { CaseStudyQuestion } from "@/components/assessment/case-study-question";
 import { LoadingSpinner } from "@/components/shared/loading-spinner";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { submitAssessment } from "@/app/actions/assessment";
 import {
   Dialog,

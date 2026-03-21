@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { markLessonComplete } from "@/app/actions/progress";
 import { ArrowLeft, ArrowRight, ClipboardCheck } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import {
   Dialog,
   DialogContent,
@@ -34,20 +35,33 @@ export function LessonNav({
   const [isPending, startTransition] = useTransition();
   const [showAssessmentModal, setShowAssessmentModal] = useState(false);
   const router = useRouter();
+  const { toast } = useToast();
 
   const isLastLesson = !nextLesson && !nextModule;
 
   function handleNext() {
     startTransition(async () => {
-      if (!isCurrentComplete) {
-        await markLessonComplete(lessonId);
-      }
-      if (nextLesson) {
-        router.push(`/module/${moduleId}/lesson/${nextLesson.id}`);
-      } else if (nextModule) {
-        router.push(`/module/${nextModule.id}`);
-      } else {
-        setShowAssessmentModal(true);
+      try {
+        if (!isCurrentComplete) {
+          await markLessonComplete(lessonId);
+        }
+        if (nextLesson) {
+          router.push(`/module/${moduleId}/lesson/${nextLesson.id}`);
+        } else if (nextModule) {
+          router.push(`/module/${nextModule.id}`);
+        } else {
+          setShowAssessmentModal(true);
+        }
+      } catch (error) {
+        const message =
+          error instanceof Error
+            ? error.message
+            : "Unable to save progress right now.";
+        toast({
+          title: "Cannot continue yet",
+          description: message,
+          variant: "destructive",
+        });
       }
     });
   }

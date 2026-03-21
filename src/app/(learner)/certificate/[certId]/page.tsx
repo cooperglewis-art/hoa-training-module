@@ -29,13 +29,26 @@ export default async function CertificatePage({
   // Only allow owner or admins
   const membership = await db.membership.findFirst({
     where: { userId: session.id },
+    orderBy: { joinedAt: "desc" },
   });
 
-  if (
-    certificate.userId !== session.id &&
-    membership?.role === "LEARNER"
-  ) {
-    redirect("/assessment");
+  if (certificate.userId !== session.id) {
+    if (!membership || membership.role === "LEARNER") {
+      redirect("/assessment");
+    }
+
+    if (membership.role !== "SUPER_ADMIN") {
+      const certOwnerMembership = await db.membership.findFirst({
+        where: {
+          userId: certificate.userId,
+          orgId: membership.orgId,
+        },
+      });
+
+      if (!certOwnerMembership) {
+        redirect("/assessment");
+      }
+    }
   }
 
   return (

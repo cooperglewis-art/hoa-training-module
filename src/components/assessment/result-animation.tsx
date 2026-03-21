@@ -9,9 +9,17 @@ interface AssessmentResultAnimationProps {
   passed: boolean;
 }
 
-function ConfettiParticle({ delay, x }: { delay: number; x: number }) {
-  const colors = ["#737852", "#002060", "#675D4F", "#22c55e", "#eab308"];
-  const color = colors[Math.floor(Math.random() * colors.length)];
+function ConfettiParticle({
+  delay,
+  x,
+  color,
+  drift,
+}: {
+  delay: number;
+  x: number;
+  color: string;
+  drift: number;
+}) {
 
   return (
     <motion.div
@@ -23,7 +31,7 @@ function ConfettiParticle({ delay, x }: { delay: number; x: number }) {
         y: [0, -40, 120],
         scale: [0, 1.2, 0.6],
         rotate: [0, 180, 360],
-        x: [0, (Math.random() - 0.5) * 80],
+        x: [0, drift],
       }}
       transition={{
         duration: 1.8,
@@ -39,16 +47,27 @@ export function AssessmentResultAnimation({
   total,
   passed,
 }: AssessmentResultAnimationProps) {
+  const colors = ["#737852", "#002060", "#675D4F", "#22c55e", "#eab308"];
+  const particles = Array.from({ length: 20 }).map((_, i) => ({
+    id: i,
+    delay: 0.3 + i * 0.06,
+    x: 15 + ((i * 37) % 70),
+    color: colors[i % colors.length],
+    drift: ((i % 9) - 4) * 10,
+  }));
+
   return (
     <div className="relative flex flex-col items-center">
       {/* Confetti for pass */}
       {passed && (
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          {Array.from({ length: 20 }).map((_, i) => (
+          {particles.map((particle) => (
             <ConfettiParticle
-              key={i}
-              delay={0.3 + i * 0.06}
-              x={15 + Math.random() * 70}
+              key={particle.id}
+              delay={particle.delay}
+              x={particle.x}
+              color={particle.color}
+              drift={particle.drift}
             />
           ))}
         </div>

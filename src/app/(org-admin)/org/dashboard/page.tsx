@@ -23,7 +23,7 @@ export default async function OrgDashboardPage() {
 
   const orgId = membership.orgId;
 
-  const [totalModules, learnerMemberships, completions, attempts, passedAttempts] =
+  const [totalModules, learnerMemberships, attempts, passedAttempts] =
     await Promise.all([
       db.module.count(),
       db.membership.findMany({
@@ -36,11 +36,6 @@ export default async function OrgDashboardPage() {
               certificates: { take: 1 },
             },
           },
-        },
-      }),
-      db.courseCompletion.count({
-        where: {
-          user: { memberships: { some: { orgId, role: "LEARNER" } } },
         },
       }),
       db.assessmentAttempt.count({

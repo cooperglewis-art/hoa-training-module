@@ -2,6 +2,7 @@
 
 import { getSession } from "@/lib/session";
 import { db } from "@/lib/db";
+import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { createOrgSchema, createInviteSchema } from "@/lib/validation/admin";
 import { sendEmail, inviteEmailHtml } from "@/lib/email";
@@ -92,11 +93,28 @@ export async function updateOrganization(
     active?: boolean;
   }
 ) {
-  const { userId } = await requireRole("SUPER_ADMIN");
+  const { userId, membership } = await requireRole("ORG_ADMIN");
+
+  if (membership.role !== "SUPER_ADMIN" && membership.orgId !== orgId) {
+    throw new Error("Forbidden: You can only update your own organization.");
+  }
+
+  const updateData =
+    membership.role === "SUPER_ADMIN"
+      ? data
+      : {
+          name: data.name,
+          contactName: data.contactName,
+          contactEmail: data.contactEmail,
+          contactPhone: data.contactPhone,
+          logo: data.logo,
+          primaryColor: data.primaryColor,
+          secondaryColor: data.secondaryColor,
+        };
 
   const org = await db.organization.update({
     where: { id: orgId },
-    data,
+    data: updateData,
   });
 
   await db.auditLog.create({
@@ -104,7 +122,7 @@ export async function updateOrganization(
       action: "ORG_UPDATED",
       actorId: userId,
       orgId: org.id,
-      metadata: { updatedFields: Object.keys(data) },
+      metadata: { updatedFields: Object.keys(updateData) },
     },
   });
 
@@ -118,9 +136,13 @@ export async function createInvite(data: {
   role?: "ORG_ADMIN" | "LEARNER";
   orgId: string;
 }) {
-  const { userId } = await requireRole("ORG_ADMIN");
+  const { userId, membership } = await requireRole("ORG_ADMIN");
 
   const parsed = createInviteSchema.parse(data);
+
+  if (membership.role !== "SUPER_ADMIN" && parsed.orgId !== membership.orgId) {
+    throw new Error("Forbidden: You can only create invites for your own organization.");
+  }
 
   const org = await db.organization.findUnique({
     where: { id: parsed.orgId },
@@ -142,7 +164,11 @@ export async function createInvite(data: {
   });
 
   if (parsed.email) {
-    const inviteUrl = `${process.env.NEXT_PUBLIC_APP_URL}/invite/${invite.token}`;
+    const appUrl =
+      process.env.NEXT_PUBLIC_APP_URL ||
+      process.env.NEXTAUTH_URL ||
+      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+    const inviteUrl = `${appUrl.replace(/\/+$/, "")}/invite/${invite.token}`;
     await sendEmail({
       to: parsed.email,
       subject: `You're invited to ${org.name} - CCR Enforcement Training`,
@@ -186,7 +212,7 @@ export async function updateContent(
     data: {
       lessonId,
       version: newVersion,
-      content: content as any,
+      content: content as Prisma.InputJsonValue,
       changelog: changelog || null,
     },
   });
@@ -226,7 +252,11 @@ export async function publishContent(lessonId: string, versionId: string) {
 }
 
 export async function exportLearnersCSV(orgId: string): Promise<string> {
-  await requireRole("ORG_ADMIN");
+  const { membership } = await requireRole("ORG_ADMIN");
+
+  if (membership.role !== "SUPER_ADMIN" && orgId !== membership.orgId) {
+    throw new Error("Forbidden: You can only export learners for your own organization.");
+  }
 
   const memberships = await db.membership.findMany({
     where: { orgId, role: "LEARNER" },

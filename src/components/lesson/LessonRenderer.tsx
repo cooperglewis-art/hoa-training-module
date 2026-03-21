@@ -16,9 +16,10 @@ import { DragDropMatchBlock } from "./blocks/DragDropMatchBlock";
 interface LessonRendererProps {
   blocks: ContentBlock[];
   orgType: OrgType;
+  lessonId: string;
 }
 
-export function LessonRenderer({ blocks, orgType }: LessonRendererProps) {
+export function LessonRenderer({ blocks, orgType, lessonId }: LessonRendererProps) {
   // Skip the first h1 heading — the page already renders the lesson title
   const skipFirstH1 = blocks.length > 0 && blocks[0].type === "heading" && blocks[0].level === 1;
   const visibleBlocks = skipFirstH1 ? blocks.slice(1) : blocks;
@@ -26,7 +27,9 @@ export function LessonRenderer({ blocks, orgType }: LessonRendererProps) {
   return (
     <div className="space-y-8">
       {visibleBlocks.map((block, index) => {
-        const key = `block-${index}`;
+        const contentIndex = skipFirstH1 ? index + 1 : index;
+        const key = `block-${contentIndex}`;
+        const gateKey = `${lessonId}:${contentIndex}`;
 
         switch (block.type) {
           case "heading":
@@ -78,6 +81,9 @@ export function LessonRenderer({ blocks, orgType }: LessonRendererProps) {
                 options={block.options}
                 correctIndex={block.correctIndex}
                 explanation={block.explanation}
+                gateNext={block.gateNext}
+                lessonId={lessonId}
+                gateKey={gateKey}
               />
             );
 
@@ -107,6 +113,8 @@ export function LessonRenderer({ blocks, orgType }: LessonRendererProps) {
                 options={block.options}
                 correctIndex={block.correctIndex}
                 gateNext={block.gateNext}
+                lessonId={lessonId}
+                gateKey={gateKey}
               />
             );
 

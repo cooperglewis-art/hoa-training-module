@@ -6,7 +6,7 @@ import { rateLimitByIp } from "@/lib/rate-limit";
 
 export async function POST(request: Request) {
   try {
-    if (!rateLimitByIp(request, 5, 60_000)) {
+    if (!(await rateLimitByIp(request, "auth:forgot-password", 5, 60_000))) {
       return NextResponse.json(
         { error: "Too many requests. Please try again in a minute." },
         { status: 429 }

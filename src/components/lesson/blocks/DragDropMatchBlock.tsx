@@ -16,25 +16,38 @@ interface Match {
   rightIndex: number;
 }
 
+function deterministicHash(input: string): number {
+  let hash = 0;
+  for (let i = 0; i < input.length; i++) {
+    hash = (hash * 31 + input.charCodeAt(i)) >>> 0;
+  }
+  return hash;
+}
+
 export function DragDropMatchBlock({ pairs }: DragDropMatchBlockProps) {
   const [selectedLeft, setSelectedLeft] = useState<number | null>(null);
   const [matches, setMatches] = useState<Match[]>([]);
   const [submitted, setSubmitted] = useState(false);
 
-  // Shuffle right side once on mount
+  // Deterministically shuffle right-side items for stable, testable UI.
   const shuffledRight = useMemo(() => {
-    const indexed = pairs.map((p, i) => ({ text: p.right, originalIndex: i }));
-    // Fisher-Yates shuffle
-    const arr = [...indexed];
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    return arr;
+    return pairs
+      .map((p, i) => ({ text: p.right, originalIndex: i }))
+      .sort((a, b) => {
+        const aHash = deterministicHash(`${a.text}:${a.originalIndex}`);
+        const bHash = deterministicHash(`${b.text}:${b.originalIndex}`);
+        return aHash - bHash;
+      });
   }, [pairs]);
 
-  const matchedLeftIndices = new Set(matches.map((m) => m.leftIndex));
-  const matchedRightIndices = new Set(matches.map((m) => m.rightIndex));
+  const matchedLeftIndices = useMemo(
+    () => new Set(matches.map((m) => m.leftIndex)),
+    [matches]
+  );
+  const matchedRightIndices = useMemo(
+    () => new Set(matches.map((m) => m.rightIndex)),
+    [matches]
+  );
 
   const handleLeftClick = useCallback(
     (index: number) => {
@@ -69,7 +82,6 @@ export function DragDropMatchBlock({ pairs }: DragDropMatchBlockProps) {
 
   const allCorrect =
     submitted && matches.length === pairs.length && matches.every(isMatchCorrect);
-  const hasErrors = submitted && !allCorrect;
 
   function handleReset() {
     setMatches([]);

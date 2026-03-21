@@ -100,7 +100,7 @@ export default function OrgSettingsPage() {
       <div>
         <h1 className="text-3xl font-bold text-[#002060]">Organization Settings</h1>
         <p className="text-[var(--muted-foreground)] mt-1">
-          Manage your organization's profile and branding.
+          Manage your organization&apos;s profile and branding.
         </p>
       </div>
 

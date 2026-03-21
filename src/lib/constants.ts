@@ -1,5 +1,7 @@
-export const APP_NAME = "CCR Enforcement Training";
-export const LAW_FIRM_NAME = "[LAW FIRM NAME]";
+export const APP_NAME =
+  process.env.NEXT_PUBLIC_APP_NAME?.trim() || "CCR Enforcement Training";
+export const LAW_FIRM_NAME =
+  process.env.NEXT_PUBLIC_LAW_FIRM_NAME?.trim() || "Your Law Firm";
 
 export const COLORS = {
   primary: "#737852",

@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { SignJWT } from "jose";
 import { cookies } from "next/headers";
 import { rateLimitByIp } from "@/lib/rate-limit";
+import { loginSchema } from "@/lib/validation/auth";
 
 const secret = new TextEncoder().encode(
   process.env.NEXTAUTH_SECRET!
@@ -11,27 +12,31 @@ const secret = new TextEncoder().encode(
 
 export async function POST(request: Request) {
   try {
-    if (!rateLimitByIp(request, 10, 60_000)) {
+    if (!(await rateLimitByIp(request, "auth:login", 10, 60_000))) {
       return NextResponse.json(
         { error: "Too many login attempts. Please try again in a minute." },
         { status: 429 }
       );
     }
 
-    const { email, password, rememberMe } = await request.json();
-
-    if (!email || !password) {
+    const body = await request.json();
+    const parsed = loginSchema.safeParse(body);
+    if (!parsed.success) {
       return NextResponse.json(
-        { error: "Email and password are required." },
+        { error: parsed.error.issues[0]?.message || "Invalid input." },
         { status: 400 }
       );
     }
+
+    const { email, password } = parsed.data;
+    const rememberMe = body.rememberMe === true;
 
     const user = await db.user.findUnique({
       where: { email },
       include: {
         memberships: {
           include: { org: true },
+          orderBy: { joinedAt: "desc" },
           take: 1,
         },
       },
@@ -53,6 +58,15 @@ export async function POST(request: Request) {
     }
 
     const membership = user.memberships[0];
+    if (!membership) {
+      return NextResponse.json(
+        {
+          error:
+            "Your account is not assigned to an organization. Please contact your administrator.",
+        },
+        { status: 403 }
+      );
+    }
 
     // Session duration: 30 days if "remember me", 1 day otherwise
     const sessionDays = rememberMe ? 30 : 1;

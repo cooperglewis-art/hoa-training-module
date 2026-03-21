@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, XCircle, Lightbulb, RotateCcw } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { recordGateCheckPassed } from "@/app/actions/progress";
+import { useToast } from "@/hooks/use-toast";
 
 interface KnowledgeCheckBlockProps {
   question: string;
@@ -12,6 +14,8 @@ interface KnowledgeCheckBlockProps {
   correctIndex: number;
   explanation?: string;
   gateNext?: boolean;
+  lessonId?: string;
+  gateKey?: string;
 }
 
 export function KnowledgeCheckBlock({
@@ -20,9 +24,15 @@ export function KnowledgeCheckBlock({
   correctIndex,
   explanation,
   gateNext,
+  lessonId,
+  gateKey,
 }: KnowledgeCheckBlockProps) {
   const [selected, setSelected] = useState<number | null>(null);
   const [submitted, setSubmitted] = useState(false);
+  const [isPending, startTransition] = useTransition();
+  const [gateRecorded, setGateRecorded] = useState(false);
+  const [gateError, setGateError] = useState<string | null>(null);
+  const { toast } = useToast();
 
   const isCorrect = submitted && selected === correctIndex;
   const isIncorrect = submitted && selected !== correctIndex;
@@ -35,7 +45,33 @@ export function KnowledgeCheckBlock({
   function handleReset() {
     setSelected(null);
     setSubmitted(false);
+    setGateError(null);
+    setGateRecorded(false);
   }
+
+  useEffect(() => {
+    if (!gateNext || !isCorrect || !lessonId || !gateKey || gateRecorded || isPending) {
+      return;
+    }
+
+    startTransition(async () => {
+      try {
+        await recordGateCheckPassed(lessonId, gateKey);
+        setGateRecorded(true);
+      } catch (error) {
+        const message =
+          error instanceof Error
+            ? error.message
+            : "Unable to save your checkpoint. Please try again.";
+        setGateError(message);
+        toast({
+          title: "Checkpoint not saved",
+          description: message,
+          variant: "destructive",
+        });
+      }
+    });
+  }, [gateNext, gateRecorded, gateKey, isCorrect, isPending, lessonId, toast]);
 
   return (
     <div className="rounded-xl border-2 border-[var(--secondary)]/20 bg-[var(--background)] overflow-hidden">
@@ -170,6 +206,15 @@ export function KnowledgeCheckBlock({
             </motion.div>
           )}
         </AnimatePresence>
+
+        {gateNext && isCorrect && isPending && (
+          <p className="text-xs text-[var(--muted-foreground)] mt-1">
+            Saving checkpoint...
+          </p>
+        )}
+        {gateError && (
+          <p className="text-xs text-[var(--destructive)] mt-1">{gateError}</p>
+        )}
 
         {/* Gate indicator */}
         {gateNext && !submitted && (

@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { AuditAction } from "@prisma/client";
 import { getSession } from "@/lib/session";
 import { redirect } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -30,8 +31,10 @@ export default async function AuditLogPage({ searchParams }: Props) {
   const page = Math.max(1, parseInt(resolvedParams.page ?? "1", 10));
   const actionFilter = resolvedParams.action ?? undefined;
 
-  const where = actionFilter
-    ? { action: actionFilter as any }
+  const isValidAuditAction =
+    actionFilter && Object.values(AuditAction).includes(actionFilter as AuditAction);
+  const where = isValidAuditAction
+    ? { action: actionFilter as AuditAction }
     : {};
 
   const [logs, totalCount, distinctActions] = await Promise.all([

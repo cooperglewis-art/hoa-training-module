@@ -211,6 +211,7 @@ model AnswerOption {
 model ModuleProgress {
   id                 String   @id @default(cuid())
   completedLessons   String[] @default([])
+  passedGateKeys     String[] @default([])
   checkpointsPassed  Int      @default(0)
   completedAt        DateTime?
   updatedAt          DateTime @updatedAt
@@ -293,4 +294,14 @@ model EmailLog {
   error      String?
   sentAt     DateTime?
   createdAt  DateTime    @default(now())
+}
+
+model RateLimitCounter {
+  key       String   @id
+  count     Int      @default(0)
+  resetAt   DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([resetAt])
 }

@@ -914,7 +914,7 @@ async function main() {
     data: {
       userId: learner1.id,
       courseId: course.id,
-      score: 100,
+      score: 4,
       passed: true,
       answers: {
         [q1.id]: 1,
@@ -1032,7 +1032,7 @@ async function main() {
         actorId: learner1.id,
         orgId: sunsetRidge.id,
         action: AuditAction.ASSESSMENT_PASSED,
-        metadata: { score: 100 },
+        metadata: { score: 4 },
         createdAt: new Date("2026-03-02T10:45:00Z"),
       },
       {

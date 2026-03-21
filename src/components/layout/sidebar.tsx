@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 // signOut handled via cookie deletion
 import {
   LayoutDashboard,
-  BookOpen,
   Award,
   Users,
   Mail,

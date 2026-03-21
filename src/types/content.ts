@@ -6,7 +6,7 @@ export type ContentBlock =
   | { type: "callout"; variant: "info" | "warning" | "statute"; title: string; body: string }
   | { type: "statute-callout"; statute: string; summary: string; appliesTo: OrgType[] }
   | { type: "scenario"; title: string; situation: string; question?: string; revealText: string }
-  | { type: "knowledge-check"; question: string; options: string[]; correctIndex: number; explanation: string }
+  | { type: "knowledge-check"; question: string; options: string[]; correctIndex: number; explanation: string; gateNext?: boolean }
   | { type: "comparison-table"; headers: string[]; rows: string[][] }
   | { type: "timeline"; steps: { title: string; description: string }[] }
   | { type: "accordion"; items: { title: string; content: string }[] }

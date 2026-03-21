@@ -14,11 +14,15 @@ export async function POST() {
     return NextResponse.json({ error: "No session" }, { status: 401 });
   }
 
-  let payload: any;
+  let payload: { id?: string };
   try {
     const result = await jwtVerify(token, secret);
-    payload = result.payload;
+    payload = { id: result.payload.id as string | undefined };
   } catch {
+    return NextResponse.json({ error: "Invalid session" }, { status: 401 });
+  }
+
+  if (!payload.id) {
     return NextResponse.json({ error: "Invalid session" }, { status: 401 });
   }
 
@@ -26,7 +30,7 @@ export async function POST() {
   const user = await db.user.findUnique({
     where: { id: payload.id },
     include: {
-      memberships: { include: { org: true }, take: 1 },
+      memberships: { include: { org: true }, orderBy: { joinedAt: "desc" }, take: 1 },
     },
   });
 
@@ -35,6 +39,9 @@ export async function POST() {
   }
 
   const membership = user.memberships[0];
+  if (!membership) {
+    return NextResponse.json({ error: "No organization membership" }, { status: 403 });
+  }
 
   const newToken = await new SignJWT({
     id: user.id,

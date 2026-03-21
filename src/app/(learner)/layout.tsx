@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
-import { db } from "@/lib/db";
 import { AppShell } from "@/components/layout/app-shell";
 
 export default async function LearnerLayout({
@@ -13,6 +12,10 @@ export default async function LearnerLayout({
   const role = headersList.get("x-user-role");
 
   if (!userId) {
+    redirect("/login");
+  }
+
+  if (!role) {
     redirect("/login");
   }
 

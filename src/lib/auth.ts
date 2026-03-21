@@ -21,6 +21,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           include: {
             memberships: {
               include: { org: true },
+              orderBy: { joinedAt: "desc" },
               take: 1,
             },
           },
@@ -35,6 +36,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (!isValid) return null;
 
         const membership = user.memberships[0];
+        if (!membership) return null;
 
         return {
           id: user.id,
