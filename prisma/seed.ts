@@ -347,31 +347,31 @@ async function main() {
           type: "comparison-table",
           headers: ["Statute", "What It Requires", "What Happens If You Don't"],
           rows: [
-            ["§ 209.007 — Notice & Hearing", "30-day cure period + hearing before fines", "Fine is void — thrown out in court"],
-            ["§ 209.006 — Records Access", "Provide books/records within 10 business days", "$500/day penalty, up to $10,000"],
+            ["§ 209.007 — Notice & Hearing", "Reasonable time to cure + owner has 30 days to request a hearing before fines", "Fine is void — thrown out in court"],
+            ["§ 209.005 — Records Access", "Provide books/records within 10 business days", "$500/day penalty, up to $5,000"],
             ["§ 209.009 — Foreclosure Limits", "Cannot foreclose for fines alone", "Foreclosure dismissed + liability"],
             ["§ 209.00593 — ADR Requirement", "Written offer of mediation before filing suit", "Lawsuit may be dismissed"],
-            ["§ 202.010 — Flag Display", "Cannot ban U.S., Texas, or military flags", "Restriction is void — period"],
+            ["§ 202.012 — Flag Display", "Cannot ban U.S., Texas, or military flags", "Restriction is void — period"],
           ],
         },
         {
           type: "statute-callout",
           statute: "Tex. Prop. Code § 209.007 — The Big One",
-          summary: "Before levying a fine or filing suit: (1) Send written notice by certified mail describing the violation, (2) Give the owner at least 30 days to cure it, (3) If not cured, hold a hearing where the owner can present their side. Skip any step and the entire enforcement action is invalid.",
+          summary: "Before levying a fine or filing suit: (1) Send written notice by certified or verified mail describing the violation, (2) Give the owner a reasonable time to cure (for curable violations), (3) The owner has 30 days to request a hearing where they can present their side. Skip any step and the entire enforcement action is invalid.",
           appliesTo: ["HOA", "POA"],
         },
         {
           type: "scenario",
-          title: "The $10,000 Ignored Email",
+          title: "The $5,000 Ignored Email",
           situation: "A homeowner requests financial records and meeting minutes in writing. The board president thinks they're just being difficult and tosses the request in a drawer.",
-          question: "What does § 209.006 require the association to do — and what's the penalty for ignoring this request?",
+          question: "What does § 209.005 require the association to do — and what's the penalty for ignoring this request?",
           revealText: "The lesson is simple: always respond to records requests within the statutory deadline, even if you think the request is unreasonable. Ignoring it is never worth the financial and legal risk. Set up a process so requests don't fall through the cracks.",
         },
         {
           type: "callout",
           variant: "warning",
           title: "Your CC&Rs Can't Override State Law",
-          body: "Even if your CC&Rs say 'fines can be assessed without a hearing,' Chapter 209 still requires one. Even if your CC&Rs ban flag displays, § 202.010 makes that restriction void. State law always wins. Your CC&Rs can be stricter than the statute, but never less protective of homeowners.",
+          body: "Even if your CC&Rs say 'fines can be assessed without a hearing,' Chapter 209 still requires one. Even if your CC&Rs ban flag displays, § 202.012 makes that restriction void. State law always wins. Your CC&Rs can be stricter than the statute, but never less protective of homeowners.",
         },
         {
           type: "callout",
@@ -510,16 +510,16 @@ async function main() {
           title: "The Chapter 209 Enforcement Process — Follow Every Step",
           steps: [
             {
-              title: "Send First Written Notice (Certified Mail)",
-              description: "Describe the specific violation, cite the CC&R provision, and give the homeowner at least 30 days to cure. This notice MUST be sent by certified mail — regular mail, email, or a door notice does not satisfy the statute.",
+              title: "Send First Written Notice (Certified or Verified Mail)",
+              description: "Describe the specific violation, cite the CC&R provision, and give the homeowner a reasonable time to cure. This notice MUST be sent by certified or verified mail — regular mail, email, or a door notice does not satisfy the statute.",
             },
             {
-              title: "Wait the Full 30-Day Cure Period",
-              description: "The homeowner has at least 30 days to fix the violation. Document whether it is cured during this period. You cannot shorten this timeline — 30 days is the statutory minimum.",
+              title: "Allow a Reasonable Cure Period",
+              description: "The homeowner must be given a reasonable time to cure the violation (for curable violations). Document whether it is cured during this period. Note: the owner also has 30 days from the notice to request a hearing to contest whether a violation occurred.",
             },
             {
-              title: "Send Second Notice of Hearing (If Not Cured)",
-              description: "If the violation continues, send a second certified mail notice informing the homeowner of a hearing date, time, and location, and their right to attend and present their case.",
+              title: "Send Notice of Hearing (If Not Cured)",
+              description: "If the violation continues and/or a hearing is requested, send a certified or verified mail notice informing the homeowner of a hearing date, time, and location, and their right to attend and present their case.",
             },
             {
               title: "Conduct the Hearing",
@@ -527,7 +527,7 @@ async function main() {
             },
             {
               title: "Issue Written Decision",
-              description: "After deliberation, send the homeowner a written decision including findings, the fine amount, and the CC&R provision violated. Send by certified mail.",
+              description: "After deliberation, send the homeowner a written decision including findings, the fine amount, and the CC&R provision violated. Send by certified or verified mail.",
             },
           ],
         },
@@ -536,7 +536,7 @@ async function main() {
           title: "The Notice That Got Everything Wrong",
           situation: "Meadowbrook POA sends a homeowner this notice: 'Your property is not in compliance with community standards. Please correct the situation within 10 days or fines will be assessed.' Looks official, right?",
           question: "How many things are wrong with this notice under Chapter 209? Would a fine based on it hold up?",
-          revealText: "This notice fails on every level: (1) doesn't identify the specific violation, (2) doesn't cite a CC&R provision, (3) gives only 10 days instead of the required 30, (4) threatens fines without mentioning a hearing, and (5) was sent by regular mail instead of certified. Any fine based on this notice would be thrown out immediately. Always use a standardized template reviewed by the association's attorney.",
+          revealText: "This notice fails on every level: (1) doesn't identify the specific violation, (2) doesn't cite a CC&R provision, (3) gives only 10 days — which is unlikely to be a 'reasonable time' to cure, (4) threatens fines without mentioning the owner's right to request a hearing, and (5) was sent by regular mail instead of certified or verified mail. Any fine based on this notice would be thrown out immediately. Always use a standardized template reviewed by the association's attorney.",
         },
         {
           type: "callout",
@@ -547,8 +547,8 @@ async function main() {
         {
           type: "callout",
           variant: "warning",
-          title: "Certified Mail Is Not Optional",
-          body: "Associations have lost enforcement actions because they sent violation notices by email or regular mail. Chapter 209 requires certified mail. Keep the receipts in the violation file — they're proof the law was followed. No receipt = no proof = no enforcement.",
+          title: "Certified or Verified Mail Is Not Optional",
+          body: "Associations have lost enforcement actions because they sent violation notices by email or regular mail. Chapter 209 requires certified or verified mail. Keep the receipts in the violation file — they're proof the law was followed. No receipt = no proof = no enforcement.",
         },
         {
           type: "prose",
@@ -579,7 +579,7 @@ async function main() {
           question: "Your HOA sends a violation notice on March 1 giving the homeowner until March 15 to cure. The notice was sent by certified mail and cites the correct CC&R provision. Is this notice compliant with Chapter 209?",
           options: [
             "Yes — two weeks is a reasonable cure period and the notice was properly sent by certified mail.",
-            "No — Chapter 209 requires at least 30 days to cure the violation, regardless of how the notice was delivered or the nature of the violation.",
+            "No — two weeks is unlikely to be considered a 'reasonable time' to cure under Chapter 209, and the notice must also inform the owner of their right to request a hearing within 30 days.",
             "Yes — as long as the CC&Rs allow a shorter cure period.",
             "It depends on the severity of the violation.",
           ],
@@ -588,7 +588,7 @@ async function main() {
         },
         {
           type: "checkpoint",
-          question: "Under Texas Property Code Chapter 209, what is the minimum cure period that must be provided in a violation notice before a fine can be levied?",
+          question: "Under Texas Property Code Chapter 209, how long does a homeowner have to request a hearing after receiving a violation notice?",
           options: [
             "10 days",
             "15 days",
@@ -684,7 +684,7 @@ async function main() {
         {
           type: "statute-callout",
           statute: "Tex. Prop. Code § 209.00593",
-          summary: "Before filing suit against a property owner (other than for unpaid assessments), the association must make a written offer to resolve the dispute through ADR. The homeowner has 30 days to accept. If they decline or do not respond, you have satisfied the prerequisite to filing suit. Send this offer by certified mail and keep the receipt — you must be able to prove you completed this step.",
+          summary: "Before filing suit against a property owner (other than for unpaid assessments), the association must make a written offer to resolve the dispute through ADR. The homeowner has 30 days to accept. If they decline or do not respond, you have satisfied the prerequisite to filing suit. Send this offer by certified or verified mail and keep the receipt — you must be able to prove you completed this step.",
           appliesTo: ["HOA", "POA"],
         },
         {
@@ -783,12 +783,12 @@ async function main() {
       scenario,
       sortOrder: 1,
       explanation:
-        "Before taking any enforcement action, the board must verify that a specific, enforceable CC&R provision has been violated. Here, Section 4.2 clearly prohibits commercial use. The board should then document the violation with date-stamped photographs from public areas and send a formal violation notice via certified mail citing Section 4.2, with at least 30 days to cure — as required by Chapter 209. You cannot skip straight to fines, litigation, or informal conversations when a formal enforcement process is mandated by statute.",
+        "Before taking any enforcement action, the board must verify that a specific, enforceable CC&R provision has been violated. Here, Section 4.2 clearly prohibits commercial use. The board should then document the violation with date-stamped photographs from public areas and send a formal violation notice via certified or verified mail citing Section 4.2, with a reasonable time to cure — as required by Chapter 209. The owner also has 30 days to request a hearing. You cannot skip straight to fines, litigation, or informal conversations when a formal enforcement process is mandated by statute.",
       answerOptions: {
         create: [
           { text: "File a lawsuit to immediately stop the commercial activity", isCorrect: false, sortOrder: 0 },
           {
-            text: "Verify the CC&R provision, document the violation, and send a formal written notice via certified mail citing Section 4.2 with at least 30 days to cure",
+            text: "Verify the CC&R provision, document the violation, and send a formal written notice via certified or verified mail citing Section 4.2 with a reasonable time to cure",
             isCorrect: true,
             sortOrder: 1,
           },
@@ -802,7 +802,7 @@ async function main() {
   const q2 = await db.question.create({
     data: {
       courseId: course.id,
-      stem: "The board sends proper notice. After 30 days, the homeowner has not cured the violation. What must happen BEFORE the board can levy a fine?",
+      stem: "The board sends proper notice. After a reasonable cure period, the homeowner has not cured the violation. What must happen BEFORE the board can levy a fine?",
       scenario,
       sortOrder: 2,
       explanation:

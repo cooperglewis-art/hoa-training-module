@@ -11,7 +11,7 @@ export function TimelineBlock({ steps }: TimelineBlockProps) {
       {steps.map((step, index) => (
         <div key={index} className="relative pb-8 last:pb-0">
           {/* Numbered circle */}
-          <div className="absolute -left-8 flex h-8 w-8 items-center justify-center rounded-full border-2 border-[var(--primary)] bg-white text-sm font-bold text-[var(--primary)]">
+          <div className="absolute -left-8 flex h-8 w-8 items-center justify-center rounded-full border-2 border-[var(--primary)] bg-[var(--background)] text-sm font-bold text-[var(--primary)]">
             {index + 1}
           </div>
 

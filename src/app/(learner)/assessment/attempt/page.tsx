@@ -156,16 +156,18 @@ export default function AssessmentAttemptPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       {/* Case Study Scenario */}
-      <Card className="mb-8 border-[#002060]/20 bg-[#002060]/[0.02]">
-        <CardHeader>
-          <CardTitle className="font-serif text-xl text-[#002060]">
+      <div className="mb-8 rounded-xl border-2 border-[var(--secondary)]/20 bg-[var(--background)] overflow-hidden">
+        <div className="bg-[var(--secondary)]/5 border-b border-[var(--secondary)]/10 px-6 py-4">
+          <p className="font-serif text-xl font-semibold text-[var(--foreground)]">
             Case Study Scenario
-          </CardTitle>
-          <CardDescription className="text-[var(--foreground)]/80 text-sm leading-relaxed whitespace-pre-line">
+          </p>
+        </div>
+        <div className="px-6 py-5">
+          <p className="text-sm leading-relaxed text-[var(--foreground)] whitespace-pre-line">
             {data.scenario}
-          </CardDescription>
-        </CardHeader>
-      </Card>
+          </p>
+        </div>
+      </div>
 
       {/* Questions */}
       <div className="space-y-6">

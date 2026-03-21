@@ -24,45 +24,39 @@ export function CaseStudyQuestion({
   onSelect,
 }: CaseStudyQuestionProps) {
   return (
-    <Card className="overflow-hidden">
-      <CardHeader className="bg-[var(--muted)] pb-4">
-        <CardTitle className="flex items-start gap-3 text-base">
-          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#002060] text-xs font-bold text-white">
-            {index + 1}
-          </span>
-          <span className="font-serif text-[#002060] leading-snug">
-            {stem}
-          </span>
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="pt-4">
-        <div className="space-y-2">
-          {options.map((option) => {
-            const isSelected = selectedOptionId === option.id;
-            return (
-              <label
-                key={option.id}
-                className={cn(
-                  "flex cursor-pointer items-start gap-3 rounded-lg border p-3 transition-colors",
-                  isSelected
-                    ? "border-[#737852] bg-[#737852]/5 ring-1 ring-[#737852]"
-                    : "border-[var(--border)] hover:bg-[var(--muted)]"
-                )}
-              >
-                <input
-                  type="radio"
-                  name={`question-${index}`}
-                  value={option.id}
-                  checked={isSelected}
-                  onChange={() => onSelect(option.id)}
-                  className="mt-0.5 h-4 w-4 shrink-0 accent-[#737852]"
-                />
-                <span className="text-sm leading-relaxed">{option.text}</span>
-              </label>
-            );
-          })}
+    <div className="rounded-xl border-2 border-[var(--secondary)]/20 bg-[var(--background)] overflow-hidden">
+      <div className="bg-[var(--secondary)]/5 border-b border-[var(--secondary)]/10 px-6 py-4">
+        <div className="flex items-center gap-2 text-sm font-semibold text-[var(--secondary)] mb-2">
+          Question {index + 1}
         </div>
-      </CardContent>
-    </Card>
+        <p className="font-medium text-[var(--foreground)] leading-relaxed">{stem}</p>
+      </div>
+      <div className="p-6 space-y-3">
+        {options.map((option) => {
+          const isSelected = selectedOptionId === option.id;
+          return (
+            <label
+              key={option.id}
+              className={cn(
+                "flex items-start gap-3 rounded-lg border-2 p-4 transition-all cursor-pointer",
+                isSelected
+                  ? "border-[var(--secondary)] bg-[var(--secondary)]/5 shadow-sm"
+                  : "border-[var(--border)] hover:border-[var(--secondary)]/40 hover:bg-[var(--muted)]/50"
+              )}
+            >
+              <input
+                type="radio"
+                name={`question-${index}`}
+                value={option.id}
+                checked={isSelected}
+                onChange={() => onSelect(option.id)}
+                className="mt-0.5 h-4 w-4 shrink-0 text-[var(--secondary)] focus:ring-[var(--ring)]"
+              />
+              <span className="text-sm leading-relaxed text-[var(--foreground)]">{option.text}</span>
+            </label>
+          );
+        })}
+      </div>
+    </div>
   );
 }
