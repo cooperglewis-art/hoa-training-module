@@ -10,7 +10,7 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
-import { CheckCircle2, Circle, ArrowLeft } from "lucide-react";
+import { Check, ArrowLeft, ArrowRight } from "lucide-react";
 
 interface ModulePageProps {
   params: Promise<{ moduleId: string }>;
@@ -76,32 +76,49 @@ export default async function ModulePage({ params }: ModulePageProps) {
             <Link
               key={lesson.id}
               href={`/module/${moduleId}/lesson/${lesson.id}`}
-              className="block"
+              className="group block"
             >
-              <Card className="transition-shadow hover:shadow-md">
-                <CardHeader className="flex-row items-center gap-4 space-y-0 py-4">
-                  <div className="flex-shrink-0">
-                    {isComplete ? (
-                      <CheckCircle2 className="h-6 w-6 text-[var(--primary)]" />
-                    ) : (
-                      <Circle className="h-6 w-6 text-[var(--border)]" />
-                    )}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <CardTitle className="text-base">
-                      <span className="text-[var(--muted-foreground)] mr-2">
-                        {index + 1}.
-                      </span>
-                      {lesson.title}
-                    </CardTitle>
-                  </div>
-                  {isComplete && (
-                    <span className="flex-shrink-0 rounded-full bg-[var(--primary)]/10 px-2 py-0.5 text-xs font-medium text-[var(--primary)]">
-                      Done
+              <div
+                className={`flex items-center gap-4 rounded-xl border-2 px-5 py-4 transition-all ${
+                  isComplete
+                    ? "border-emerald-200 bg-emerald-50/50 dark:border-emerald-800/50 dark:bg-emerald-950/20"
+                    : "border-[var(--border)] bg-[var(--background)] hover:border-[var(--secondary)]/40 hover:shadow-md"
+                }`}
+              >
+                {/* Checkbox */}
+                <div
+                  className={`flex h-6 w-6 shrink-0 items-center justify-center rounded border-2 transition-colors ${
+                    isComplete
+                      ? "border-emerald-500 bg-emerald-500 text-white"
+                      : "border-[var(--border)] bg-[var(--background)] group-hover:border-[var(--secondary)]/50"
+                  }`}
+                >
+                  {isComplete && <Check className="h-4 w-4" strokeWidth={3} />}
+                </div>
+
+                {/* Lesson info */}
+                <div className="min-w-0 flex-1">
+                  <p className={`font-medium leading-snug ${
+                    isComplete
+                      ? "text-emerald-800 dark:text-emerald-200"
+                      : "text-[var(--foreground)]"
+                  }`}>
+                    <span className="text-[var(--muted-foreground)] mr-1.5">
+                      {index + 1}.
                     </span>
-                  )}
-                </CardHeader>
-              </Card>
+                    {lesson.title}
+                  </p>
+                </div>
+
+                {/* Status / Arrow */}
+                {isComplete ? (
+                  <span className="shrink-0 rounded-md bg-emerald-100 dark:bg-emerald-900/50 px-2.5 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-300">
+                    Complete
+                  </span>
+                ) : (
+                  <ArrowRight className="h-4 w-4 shrink-0 text-[var(--muted-foreground)] group-hover:text-[var(--secondary)] transition-colors" />
+                )}
+              </div>
             </Link>
           );
         })}
