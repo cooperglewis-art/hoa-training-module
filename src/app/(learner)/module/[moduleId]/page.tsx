@@ -79,7 +79,7 @@ export default async function ModulePage({ params }: ModulePageProps) {
               className="group block"
             >
               <div
-                className={`flex items-center gap-4 rounded-xl border-2 px-5 py-4 transition-all ${
+                className={`flex items-center gap-4 rounded-xl border px-6 py-5 transition-all ${
                   isComplete
                     ? "border-emerald-200 bg-emerald-50/50 dark:border-emerald-800/50 dark:bg-emerald-950/20"
                     : "border-[var(--border)] bg-[var(--background)] hover:border-[var(--secondary)]/40 hover:shadow-md"
@@ -87,13 +87,13 @@ export default async function ModulePage({ params }: ModulePageProps) {
               >
                 {/* Checkbox */}
                 <div
-                  className={`flex h-6 w-6 shrink-0 items-center justify-center rounded border-2 transition-colors ${
+                  className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-sm border transition-colors ${
                     isComplete
                       ? "border-emerald-500 bg-emerald-500 text-white"
-                      : "border-[var(--border)] bg-[var(--background)] group-hover:border-[var(--secondary)]/50"
+                      : "border-[var(--muted-foreground)]/40 bg-[var(--background)] group-hover:border-[var(--secondary)]/50"
                   }`}
                 >
-                  {isComplete && <Check className="h-4 w-4" strokeWidth={3} />}
+                  {isComplete && <Check className="h-3.5 w-3.5" strokeWidth={3} />}
                 </div>
 
                 {/* Lesson info */}
