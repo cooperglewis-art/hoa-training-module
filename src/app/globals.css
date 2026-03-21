@@ -19,6 +19,36 @@
   --destructive: #dc2626;
   --destructive-foreground: #ffffff;
   --radius: 0.5rem;
+  --sidebar-bg: #ffffff;
+  --nav-text: #675D4F;
+  --nav-active: #737852;
+  --heading-text: #002060;
+  --surface: #f9fafb80;
+}
+
+.dark {
+  --background: #0f1117;
+  --foreground: #e4e4e7;
+  --primary: #8a9062;
+  --primary-foreground: #ffffff;
+  --secondary: #3b82f6;
+  --secondary-foreground: #ffffff;
+  --accent: #a39888;
+  --accent-foreground: #ffffff;
+  --muted: #1e1f26;
+  --muted-foreground: #9ca3af;
+  --card: #181920;
+  --card-foreground: #e4e4e7;
+  --border: #2e2f38;
+  --input: #2e2f38;
+  --ring: #8a9062;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --sidebar-bg: #181920;
+  --nav-text: #a39888;
+  --nav-active: #8a9062;
+  --heading-text: #93b4ff;
+  --surface: #181920;
 }
 
 @theme inline {
@@ -39,6 +69,11 @@
   --color-ring: var(--ring);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
+  --color-sidebar-bg: var(--sidebar-bg);
+  --color-nav-text: var(--nav-text);
+  --color-nav-active: var(--nav-active);
+  --color-heading-text: var(--heading-text);
+  --color-surface: var(--surface);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);

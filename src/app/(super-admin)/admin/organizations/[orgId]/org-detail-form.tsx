@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { updateOrganization } from "@/app/actions/admin";
+import { useToast } from "@/hooks/use-toast";
 
 interface OrgDetailFormProps {
   org: {
@@ -25,6 +26,7 @@ export function OrgDetailForm({ org }: OrgDetailFormProps) {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast();
 
   const [name, setName] = useState(org.name);
   const [contactName, setContactName] = useState(org.contactName ?? "");
@@ -49,8 +51,11 @@ export function OrgDetailForm({ org }: OrgDetailFormProps) {
         active,
       });
       setSuccess(true);
+      toast({ title: "Saved", description: "Organization updated successfully." });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to update organization");
+      const msg = err instanceof Error ? err.message : "Failed to update organization";
+      setError(msg);
+      toast({ title: "Error", description: msg, variant: "destructive" });
     } finally {
       setLoading(false);
     }

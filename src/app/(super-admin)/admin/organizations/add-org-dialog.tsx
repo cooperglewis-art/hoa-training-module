@@ -21,6 +21,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { createOrganization } from "@/app/actions/admin";
+import { useToast } from "@/hooks/use-toast";
 import { Plus } from "lucide-react";
 import { slugify } from "@/lib/utils";
 
@@ -28,6 +29,7 @@ export function AddOrganizationDialog() {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast();
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
   const [type, setType] = useState<"HOA" | "POA" | "COA">("HOA");
@@ -54,6 +56,7 @@ export function AddOrganizationDialog() {
         contactEmail: contactEmail || undefined,
         contactPhone: contactPhone || undefined,
       });
+      toast({ title: "Organization created", description: `${name} has been added.` });
       setOpen(false);
       setName("");
       setSlug("");
@@ -62,7 +65,9 @@ export function AddOrganizationDialog() {
       setContactEmail("");
       setContactPhone("");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to create organization");
+      const msg = err instanceof Error ? err.message : "Failed to create organization";
+      setError(msg);
+      toast({ title: "Error", description: msg, variant: "destructive" });
     } finally {
       setLoading(false);
     }

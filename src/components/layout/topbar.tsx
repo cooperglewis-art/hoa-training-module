@@ -2,7 +2,8 @@
 
 import { useSession, signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
-import { Menu, LogOut, User } from "lucide-react";
+import { Menu, LogOut, User, Moon, Sun } from "lucide-react";
+import { useTheme } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -38,6 +39,7 @@ function generateBreadcrumbs(pathname: string) {
 
 export function Topbar({ onMobileMenuToggle, className }: TopbarProps) {
   const { data: session } = useSession();
+  const { theme, toggleTheme } = useTheme();
   const pathname = usePathname();
   const breadcrumbs = generateBreadcrumbs(pathname);
 
@@ -53,7 +55,7 @@ export function Topbar({ onMobileMenuToggle, className }: TopbarProps) {
   return (
     <header
       className={cn(
-        "flex h-16 shrink-0 items-center justify-between border-b border-[var(--border)] bg-white px-4 lg:px-6",
+        "flex h-16 shrink-0 items-center justify-between border-b border-[var(--border)] bg-[var(--sidebar-bg)] px-4 lg:px-6",
         className
       )}
     >
@@ -72,17 +74,17 @@ export function Topbar({ onMobileMenuToggle, className }: TopbarProps) {
         )}
 
         <nav aria-label="Breadcrumb" className="hidden sm:block">
-          <ol className="flex items-center gap-1 text-sm text-[#675D4F]">
+          <ol className="flex items-center gap-1 text-sm text-[var(--nav-text)]">
             {breadcrumbs.map((crumb, index) => (
               <li key={crumb.href} className="flex items-center gap-1">
                 {index > 0 && (
-                  <span className="text-[#675D4F]/40">/</span>
+                  <span className="text-[var(--nav-text)]/40">/</span>
                 )}
                 <span
                   className={cn(
                     index === breadcrumbs.length - 1
-                      ? "font-medium text-[#002060]"
-                      : "text-[#675D4F]"
+                      ? "font-medium text-[var(--heading-text)]"
+                      : "text-[var(--nav-text)]"
                   )}
                 >
                   {crumb.label}
@@ -93,7 +95,22 @@ export function Topbar({ onMobileMenuToggle, className }: TopbarProps) {
         </nav>
       </div>
 
-      {/* Right: User avatar + dropdown */}
+      {/* Right: Theme toggle + User avatar */}
+      <div className="flex items-center gap-2">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={toggleTheme}
+          aria-label="Toggle dark mode"
+          className="h-9 w-9"
+        >
+          {theme === "dark" ? (
+            <Sun className="h-4 w-4" />
+          ) : (
+            <Moon className="h-4 w-4" />
+          )}
+        </Button>
+
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
@@ -102,7 +119,7 @@ export function Topbar({ onMobileMenuToggle, className }: TopbarProps) {
             aria-label="User menu"
           >
             <Avatar className="h-9 w-9">
-              <AvatarFallback className="bg-[#737852] text-xs text-white">
+              <AvatarFallback className="bg-[var(--nav-active)] text-xs text-white">
                 {userInitials}
               </AvatarFallback>
             </Avatar>
@@ -111,10 +128,10 @@ export function Topbar({ onMobileMenuToggle, className }: TopbarProps) {
         <DropdownMenuContent align="end" className="w-56">
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
-              <p className="text-sm font-medium leading-none text-[#002060]">
+              <p className="text-sm font-medium leading-none text-[var(--heading-text)]">
                 {session?.user?.name ?? "User"}
               </p>
-              <p className="text-xs leading-none text-[#675D4F]">
+              <p className="text-xs leading-none text-[var(--nav-text)]">
                 {session?.user?.email ?? ""}
               </p>
             </div>
@@ -134,6 +151,7 @@ export function Topbar({ onMobileMenuToggle, className }: TopbarProps) {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+      </div>
     </header>
   );
 }

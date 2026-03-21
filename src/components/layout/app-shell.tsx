@@ -57,7 +57,7 @@ export function AppShell({ children, role }: AppShellProps) {
         <main
           className={cn(
             "flex-1 overflow-y-auto p-4 lg:p-6",
-            "bg-gray-50/50"
+            "bg-[var(--surface)]"
           )}
         >
           {children}

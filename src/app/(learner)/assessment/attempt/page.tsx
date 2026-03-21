@@ -21,6 +21,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { useToast } from "@/hooks/use-toast";
 import { AlertCircle, Send } from "lucide-react";
 
 interface AnswerOption {
@@ -48,6 +49,7 @@ export default function AssessmentAttemptPage() {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [showConfirm, setShowConfirm] = useState(false);
+  const { toast } = useToast();
 
   // Prevent accidental navigation away during assessment
   useEffect(() => {
@@ -113,9 +115,9 @@ export default function AssessmentAttemptPage() {
       const result = await submitAssessment(answers);
       router.push(`/assessment/result?attemptId=${result.attemptId}`);
     } catch (err) {
-      setSubmitError(
-        err instanceof Error ? err.message : "Submission failed. Please try again."
-      );
+      const msg = err instanceof Error ? err.message : "Submission failed. Please try again.";
+      setSubmitError(msg);
+      toast({ title: "Submission failed", description: msg, variant: "destructive" });
       setSubmitting(false);
     }
   }

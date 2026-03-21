@@ -82,7 +82,7 @@ export function Sidebar({
     <TooltipProvider delayDuration={0}>
       <aside
         className={cn(
-          "flex h-full flex-col border-r border-[var(--border)] bg-white transition-all duration-300",
+          "flex h-full flex-col border-r border-[var(--border)] bg-[var(--sidebar-bg)] transition-all duration-300",
           collapsed ? "w-16" : "w-64",
           className
         )}
@@ -122,14 +122,14 @@ export function Sidebar({
                 className={cn(
                   "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                   isActive
-                    ? "bg-[#737852]/10 text-[#737852]"
-                    : "text-[#675D4F] hover:bg-[#737852]/5 hover:text-[#737852]"
+                    ? "bg-[var(--nav-active)]/10 text-[var(--nav-active)]"
+                    : "text-[var(--nav-text)] hover:bg-[var(--nav-active)]/10 hover:text-[var(--nav-active)]"
                 )}
               >
                 <item.icon
                   className={cn(
                     "h-5 w-5 shrink-0",
-                    isActive ? "text-[#737852]" : "text-[#675D4F]"
+                    isActive ? "text-[var(--nav-active)]" : "text-[var(--nav-text)]"
                   )}
                 />
                 {!collapsed && <span>{item.label}</span>}
@@ -154,7 +154,7 @@ export function Sidebar({
         {/* User section */}
         <div className="border-t border-[var(--border)] p-3">
           {userName && !collapsed && (
-            <p className="mb-2 truncate text-sm font-medium text-[#002060]">
+            <p className="mb-2 truncate text-sm font-medium text-[var(--heading-text)]">
               {userName}
             </p>
           )}
@@ -165,7 +165,7 @@ export function Sidebar({
                   variant="ghost"
                   size="icon"
                   onClick={() => { fetch("/api/auth/logout", { method: "POST" }).then(() => { window.location.href = "/login"; }); }}
-                  className="w-full text-[#675D4F] hover:text-red-600"
+                  className="w-full text-[var(--nav-text)] hover:text-red-600"
                   aria-label="Sign out"
                 >
                   <LogOut className="h-5 w-5" />
@@ -179,7 +179,7 @@ export function Sidebar({
             <Button
               variant="ghost"
               onClick={() => { fetch("/api/auth/logout", { method: "POST" }).then(() => { window.location.href = "/login"; }); }}
-              className="w-full justify-start gap-2 text-[#675D4F] hover:text-red-600"
+              className="w-full justify-start gap-2 text-[var(--nav-text)] hover:text-red-600"
             >
               <LogOut className="h-4 w-4" />
               Sign Out

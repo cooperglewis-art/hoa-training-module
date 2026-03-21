@@ -13,6 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { createInvite } from "@/app/actions/admin";
+import { useToast } from "@/hooks/use-toast";
 import { UserPlus } from "lucide-react";
 
 interface CreateInviteFormProps {
@@ -25,6 +26,7 @@ export function CreateInviteForm({ orgId }: CreateInviteFormProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,14 +40,16 @@ export function CreateInviteForm({ orgId }: CreateInviteFormProps) {
         role,
         orgId,
       });
-      setSuccess(
-        email
-          ? `Invite sent to ${email}`
-          : `Open invite link created. Share the link with your learners.`
-      );
+      const msg = email
+        ? `Invite sent to ${email}`
+        : `Open invite link created. Share the link with your learners.`;
+      setSuccess(msg);
+      toast({ title: "Invite created", description: msg });
       setEmail("");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to create invite.");
+      const msg = err instanceof Error ? err.message : "Failed to create invite.";
+      setError(msg);
+      toast({ title: "Error", description: msg, variant: "destructive" });
     } finally {
       setLoading(false);
     }

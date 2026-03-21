@@ -28,12 +28,12 @@
 - [x] Add breadcrumb navigation on lesson pages showing Module > Lesson
 - [ ] Improve mobile responsiveness — test on iPhone/iPad breakpoints
 - [ ] Add keyboard navigation support for drag-drop-match exercises
-- [ ] Add progress save indicator ("Your progress is saved") on lesson pages
+- [x] Add progress save indicator ("Your progress is saved") on lesson pages
 - [ ] Animate module unlock transitions on dashboard
 - [ ] Add confetti animation on assessment pass (currently only in result-animation component, verify it renders)
-- [ ] Toast notifications for success/error states on all forms
+- [x] Toast notifications for success/error states on all forms
 - [x] Add "Back to Dashboard" button on all inner pages
-- [ ] Dark mode support (CSS variables are set up but no toggle exists)
+- [x] Dark mode support (CSS variables are set up but no toggle exists)
 - [x] Add print-friendly styles for certificate page
 - [ ] Improve empty states for admin pages with no data
 

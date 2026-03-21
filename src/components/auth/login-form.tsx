@@ -13,10 +13,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
 
 export function LoginForm() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -47,6 +49,11 @@ export function LoginForm() {
       window.location.href = "/dashboard";
     } catch {
       setError("Something went wrong. Please try again.");
+      toast({
+        title: "Login failed",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
       setIsLoading(false);
     }
   }
