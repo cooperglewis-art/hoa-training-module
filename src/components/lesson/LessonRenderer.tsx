@@ -11,7 +11,7 @@ import { ComparisonTableBlock } from "./blocks/ComparisonTableBlock";
 import { TimelineBlock } from "./blocks/TimelineBlock";
 import { AccordionBlock } from "./blocks/AccordionBlock";
 import { DragDropMatchBlock } from "./blocks/DragDropMatchBlock";
-import { CheckpointBlock } from "./blocks/CheckpointBlock";
+// CheckpointBlock is now handled by KnowledgeCheckBlock
 
 interface LessonRendererProps {
   blocks: ContentBlock[];
@@ -19,9 +19,13 @@ interface LessonRendererProps {
 }
 
 export function LessonRenderer({ blocks, orgType }: LessonRendererProps) {
+  // Skip the first h1 heading — the page already renders the lesson title
+  const skipFirstH1 = blocks.length > 0 && blocks[0].type === "heading" && blocks[0].level === 1;
+  const visibleBlocks = skipFirstH1 ? blocks.slice(1) : blocks;
+
   return (
     <div className="space-y-8">
-      {blocks.map((block, index) => {
+      {visibleBlocks.map((block, index) => {
         const key = `block-${index}`;
 
         switch (block.type) {
@@ -96,7 +100,7 @@ export function LessonRenderer({ blocks, orgType }: LessonRendererProps) {
 
           case "checkpoint":
             return (
-              <CheckpointBlock
+              <KnowledgeCheckBlock
                 key={key}
                 question={block.question}
                 options={block.options}
