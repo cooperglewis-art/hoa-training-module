@@ -3,9 +3,17 @@ import { hash } from "bcryptjs";
 import { db } from "@/lib/db";
 import { registerSchema } from "@/lib/validation/auth";
 import { sendEmail, welcomeEmailHtml } from "@/lib/email";
+import { rateLimitByIp } from "@/lib/rate-limit";
 
 export async function POST(request: Request) {
   try {
+    if (!rateLimitByIp(request, 5, 60_000)) {
+      return NextResponse.json(
+        { error: "Too many registration attempts. Please try again in a minute." },
+        { status: 429 }
+      );
+    }
+
     const body = await request.json();
 
     const result = registerSchema.safeParse(body);
@@ -21,6 +29,14 @@ export async function POST(request: Request) {
       inviteToken?: string;
       orgSlug?: string;
     };
+
+    // Require org context — no naked self-registration
+    if (!inviteToken && !orgSlug) {
+      return NextResponse.json(
+        { error: "Registration requires an invite link or organization enrollment link." },
+        { status: 400 }
+      );
+    }
 
     // Check if user already exists
     const existingUser = await db.user.findUnique({

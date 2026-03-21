@@ -1,106 +1,93 @@
-# CCR Enforcement Training — Remaining TODO
+# CCR Enforcement Training — MVP Checklist
 
-## Security
-- [ ] Replace `[LAW FIRM NAME]` placeholder with actual firm name throughout codebase
-- [ ] Move database password out of connection string and into a proper secret manager
-- [ ] Add rate limiting to login, registration, and password reset endpoints
-- [ ] Add CSRF protection to custom `/api/auth/login` route (currently bypasses NextAuth CSRF)
-- [ ] Set `secure: true` on session cookie in production (currently only in `NODE_ENV=production`)
-- [x] Add Content-Security-Policy headers
-- [ ] Audit all `dangerouslySetInnerHTML` usage in ProseBlock — sanitize HTML content from DB
-- [ ] Add input sanitization on all admin content editor inputs
-- [ ] Implement account lockout after N failed login attempts
-- [ ] Add email verification flow (currently `emailVerified` field is unused)
-- [ ] Rotate `NEXTAUTH_SECRET` / JWT signing key on a schedule
-- [x] Remove `/debug` page before production deployment
-- [ ] Add Supabase Row-Level Security policies for multi-tenant data isolation
-- [x] Ensure certificate download route validates org membership (not just user ownership)
+## Priority 1 — Must complete before showing externally
 
-## Auth & Session
-- [ ] Session refresh: JWT doesn't update when role/org changes — add periodic refresh or short expiry with refresh token
-- [ ] Register flow: users who register without an invite/org link have no membership — add org selection step or block direct registration
-- [x] Add "Remember me" option on login (shorter vs longer JWT expiry)
-- [x] Password strength meter on registration form
-- [ ] Add OAuth providers (Google, Microsoft) for enterprise SSO
+### 1. Unify Auth/Session (CRITICAL — causes redirect loop / flickering)
+- [x] Remove the split between NextAuth and the custom JWT cookie path
+- [x] Make one system the source of truth for authentication
+- [x] Ensure middleware, server components, and client session state all read from the same system
+- [x] Fix infinite redirect loop on homepage (GET / and /api/auth/session cycling)
 
-## UI/UX Polish
-- [ ] Add loading skeletons for all server component pages (currently blank while loading)
-- [x] Add breadcrumb navigation on lesson pages showing Module > Lesson
-- [ ] Improve mobile responsiveness — test on iPhone/iPad breakpoints
-- [ ] Add keyboard navigation support for drag-drop-match exercises
-- [x] Add progress save indicator ("Your progress is saved") on lesson pages
-- [ ] Animate module unlock transitions on dashboard
-- [ ] Add confetti animation on assessment pass (currently only in result-animation component, verify it renders)
-- [x] Toast notifications for success/error states on all forms
-- [x] Add "Back to Dashboard" button on all inner pages
-- [x] Dark mode support (CSS variables are set up but no toggle exists)
-- [x] Add print-friendly styles for certificate page
-- [ ] Improve empty states for admin pages with no data
+### 2. Fix Content Schema End-to-End
+- [x] Define one canonical lesson JSON schema (content is plain `ContentBlock[]` array)
+- [x] Update seed data field names to match canonical schema (prose→html, callout→body, etc.)
+- [x] Update TypeScript types to match (removed `LessonContent` wrapper)
+- [x] Update content loader to normalize both formats
+- [x] Update lesson page to use array directly
 
-## Content & Learning
-- [ ] Review all lesson content for legal accuracy with actual Texas attorney
-- [x] Add estimated reading time per lesson
-- [ ] Add lesson bookmarking / "pick up where you left off"
-- [ ] Module progress should prevent skipping lessons within a module (enforce linear order)
-- [ ] Add "Knowledge Check" review mode — let learners re-take in-lesson quizzes without resetting progress
-- [ ] Make checkpoint blocks actually gate the "Next" button (verify CheckpointBlock integration)
-- [ ] Add downloadable resources (PDF checklists, reference guides) per module
-- [ ] Add glossary of legal terms
-- [ ] Content versioning: show learners when content has been updated since they last viewed it
+### 3. Lock Onboarding to Org Context
+- [x] Require invite token or org enrollment link for registration
+- [x] Block naked self-registration with no org (API returns 400)
+- [x] Register page shows informational message directing to org admin
+- [ ] Decide whether MVP supports one org per user only
 
-## Assessment
-- [x] Randomize question order and answer option order per attempt
-- [ ] Add timer option for assessment (configurable by admin)
-- [x] Prevent browser back-button during assessment attempt
-- [x] Add "Are you sure?" confirmation before submitting assessment
-- [ ] Track time spent per question for analytics
+### 4. Replace Placeholders & Write Real README
+- [ ] Replace `[LAW FIRM NAME]` placeholder throughout codebase
+- [ ] Add setup instructions, env vars, seed accounts
+- [ ] Add auth architecture notes
+- [ ] Add deployment steps
+- [ ] Add content schema documentation
 
-## Certificate
-- [ ] Design a proper PDF template background image (currently generated entirely with pdf-lib drawing)
-- [ ] Add QR code to certificate linking to verification page
-- [ ] Create public certificate verification page (`/verify/[serialNumber]`)
-- [ ] Test certificate PDF rendering with long names / org names (text overflow)
+### 5. Legal/Content QA Pass
+- [ ] Freeze first course version
+- [ ] Review every lesson and question for Texas legal accuracy
+- [ ] Verify all statute references (Ch. 202, 209, 82) are current
+- [ ] This is a law-firm product — content risk is as important as code risk
 
-## Email
-- [ ] Set up actual Resend account and configure sending domain
-- [ ] Design HTML email templates with proper responsive layout
-- [ ] Add email unsubscribe link for non-transactional emails
-- [ ] Test certificate email attachment delivery (PDF size limits)
-- [ ] Add retry logic for failed email sends
+### 6. Minimum Security Protections
+- [x] Rate limit login (10/min), register (5/min), and forgot-password (5/min) endpoints
+- [ ] Add CSRF protection if keeping custom login endpoint
+- [x] Remove all production fallback to "dev-secret" (now uses NEXTAUTH_SECRET!)
+- [x] Sanitize HTML content before rendering (ProseBlock uses DOMPurify)
+- [ ] Move database password to proper secret manager
+- [x] Set `secure: true` on session cookie in production (already conditional on NODE_ENV)
 
-## Admin
-- [ ] Content editor: replace raw JSON textarea with a visual block editor (drag/drop blocks)
-- [ ] Add bulk invite upload (CSV import) for org admins
-- [ ] Add learner progress export with more detail (per-lesson completion times)
-- [ ] Add dashboard charts (completion over time, pass rates) using a charting library
-- [ ] Add ability for super admin to impersonate a learner for debugging
-- [ ] Add org billing/subscription management (if monetized)
-- [ ] Add email notification preferences per org
+### 7. One True Acceptance Test
+- [x] E2E test covers: login → disclaimer → complete modules → assessment → certificate → org admin verification
+- [x] Uses seeded test data (learner2, orgadmin)
+- [ ] Verify test passes end-to-end against running app
 
-## Infrastructure & DevOps
-- [ ] Set up Vercel deployment with environment variables
-- [ ] Configure Supabase connection pooling (use pooler URL for serverless)
-- [ ] Add database migrations (currently using `db push` — switch to `prisma migrate` for production)
-- [ ] Set up CI/CD pipeline (GitHub Actions: lint, type-check, test, build)
-- [ ] Add error monitoring (Sentry or similar)
-- [ ] Add analytics (PostHog, Mixpanel, or similar)
-- [ ] Set up database backups
-- [x] Add health check endpoint
-- [ ] Configure proper logging (structured JSON logs)
-- [ ] Load testing for concurrent assessment submissions
+### 8. Deployable Database Workflow
+- [x] Switch from `prisma db push` to `prisma migrate` (initial migration created and applied)
+- [ ] Set up deploy environment variables
+- [x] Add CI pipeline (GitHub Actions: lint, type-check, test, build, e2e)
 
-## Testing
-- [ ] Add E2E tests that run against seeded database (currently tests may fail without DB)
-- [ ] Add unit tests for session.ts JWT encode/decode
-- [ ] Add integration tests for login → dashboard → module → lesson → assessment flow
-- [ ] Add visual regression tests for certificate PDF output
-- [ ] Test multi-tenant isolation (learner in Org A cannot see Org B data)
-- [ ] Accessibility audit (WCAG 2.1 AA compliance)
-- [ ] Cross-browser testing (Safari, Firefox, Edge)
+---
 
-## Performance
-- [x] Add database indexes for common queries (userId+moduleId on ModuleProgress, etc.)
-- [ ] Cache course structure data (doesn't change often)
-- [ ] Optimize lesson content loading — only fetch published version
-- [ ] Add ISR (Incremental Static Regeneration) for public pages
-- [ ] Lazy load interactive lesson components (drag-drop, knowledge-check)
+## Priority 2 — Soon after MVP, not a blocker for first pilot
+
+### Org Admin Experience
+- [ ] Better empty states for admin pages
+- [ ] Bulk invite / CSV upload
+- [ ] Richer learner progress export (per-lesson completion times)
+
+### Certificate Polish
+- [ ] Better visual PDF template (currently generated with pdf-lib drawing only)
+- [ ] Long-name overflow handling
+- [ ] Optional verification page / QR code
+
+### Mobile & Accessibility
+- [ ] Mobile breakpoint testing (iPhone/iPad)
+- [ ] Keyboard support for interactive blocks (drag-drop-match)
+- [ ] WCAG 2.1 AA accessibility audit
+
+### Operational Visibility
+- [ ] Structured logging (JSON logs)
+- [ ] Error monitoring (Sentry or similar)
+- [ ] Analytics (PostHog, Mixpanel, or similar)
+- [ ] Database backups
+
+---
+
+## Not MVP — Do not let these slow you down
+- OAuth / enterprise SSO
+- Org billing / subscriptions
+- Dashboard charts (completion over time, pass rates)
+- Super admin impersonation tools
+- Public certificate verification page
+- Block-editor UX for content authoring
+- Dark mode toggle polish
+- Confetti / extra animations
+- Lesson bookmarking
+- Assessment timer
+- Content versioning notifications

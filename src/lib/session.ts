@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { jwtVerify } from "jose";
 
 const secret = new TextEncoder().encode(
-  process.env.NEXTAUTH_SECRET || "dev-secret"
+  process.env.NEXTAUTH_SECRET!
 );
 
 export interface SessionUser {

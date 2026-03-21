@@ -13,10 +13,6 @@ export type ContentBlock =
   | { type: "drag-drop-match"; pairs: { left: string; right: string }[] }
   | { type: "checkpoint"; question: string; options: string[]; correctIndex: number; gateNext: boolean };
 
-export interface LessonContent {
-  blocks: ContentBlock[];
-}
-
 export interface ModuleWithLessons {
   id: string;
   title: string;

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { registerSchema, type RegisterInput } from "@/lib/validation/auth";
@@ -81,21 +80,20 @@ export function RegisterForm({ inviteToken, orgSlug, orgName }: RegisterFormProp
       }
 
       // Auto sign-in after successful registration
-      const signInResult = await signIn("credentials", {
-        email: data.email,
-        password: data.password,
-        redirect: false,
+      const loginRes = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: data.email, password: data.password }),
       });
 
-      if (signInResult?.error) {
+      if (!loginRes.ok) {
         toast({
           title: "Account created",
           description: "Your account was created. Please sign in manually.",
         });
         router.push("/login");
       } else {
-        router.push("/dashboard");
-        router.refresh();
+        window.location.href = "/dashboard";
       }
     } catch {
       toast({

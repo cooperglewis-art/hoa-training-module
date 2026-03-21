@@ -1,5 +1,5 @@
 import { db } from "./db";
-import type { ContentBlock, LessonContent } from "@/types/content";
+import type { ContentBlock } from "@/types/content";
 
 const WORDS_PER_MINUTE = 200;
 
@@ -37,7 +37,7 @@ export function estimateReadingTime(blocks: ContentBlock[]): number {
   return Math.max(1, Math.ceil(totalWords / WORDS_PER_MINUTE));
 }
 
-export async function getPublishedContent(lessonId: string): Promise<LessonContent | null> {
+export async function getPublishedContent(lessonId: string): Promise<ContentBlock[] | null> {
   const version = await db.lessonContentVersion.findFirst({
     where: {
       lessonId,
@@ -47,7 +47,14 @@ export async function getPublishedContent(lessonId: string): Promise<LessonConte
   });
 
   if (!version) return null;
-  return version.content as unknown as LessonContent;
+
+  // Normalize: content may be stored as plain array or { blocks: [...] }
+  const raw = version.content as unknown;
+  if (Array.isArray(raw)) return raw as ContentBlock[];
+  if (raw && typeof raw === "object" && "blocks" in raw) {
+    return (raw as { blocks: ContentBlock[] }).blocks;
+  }
+  return null;
 }
 
 export async function getCourseWithModules() {

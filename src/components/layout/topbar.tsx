@@ -1,6 +1,7 @@
 "use client";
 
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "@/components/auth/session-provider";
+import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { Menu, LogOut, User, Moon, Sun } from "lucide-react";
 import { useTheme } from "@/components/theme-provider";
@@ -38,13 +39,14 @@ function generateBreadcrumbs(pathname: string) {
 }
 
 export function Topbar({ onMobileMenuToggle, className }: TopbarProps) {
-  const { data: session } = useSession();
+  const { user } = useSession();
   const { theme, toggleTheme } = useTheme();
   const pathname = usePathname();
+  const router = useRouter();
   const breadcrumbs = generateBreadcrumbs(pathname);
 
-  const userInitials = session?.user?.name
-    ? session.user.name
+  const userInitials = user?.name
+    ? user.name
         .split(" ")
         .map((n) => n[0])
         .join("")
@@ -129,10 +131,10 @@ export function Topbar({ onMobileMenuToggle, className }: TopbarProps) {
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
               <p className="text-sm font-medium leading-none text-[var(--heading-text)]">
-                {session?.user?.name ?? "User"}
+                {user?.name ?? "User"}
               </p>
               <p className="text-xs leading-none text-[var(--nav-text)]">
-                {session?.user?.email ?? ""}
+                {user?.email ?? ""}
               </p>
             </div>
           </DropdownMenuLabel>
@@ -144,7 +146,10 @@ export function Topbar({ onMobileMenuToggle, className }: TopbarProps) {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             className="cursor-pointer gap-2 text-red-600 focus:text-red-600"
-            onClick={() => signOut({ callbackUrl: "/login" })}
+            onClick={async () => {
+              await fetch("/api/auth/logout", { method: "POST" });
+              window.location.href = "/login";
+            }}
           >
             <LogOut className="h-4 w-4" />
             Sign Out

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { EB_Garamond, Inter } from "next/font/google";
-import { SessionProvider } from "next-auth/react";
+import { CustomSessionProvider } from "@/components/auth/session-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
@@ -39,10 +39,10 @@ export default function RootLayout({
         className={`${garamond.variable} ${inter.variable} antialiased`}
       >
         <ThemeProvider>
-          <SessionProvider>
+          <CustomSessionProvider>
             {children}
             <Toaster />
-          </SessionProvider>
+          </CustomSessionProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -1,16 +1,16 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+import { useSession } from "@/components/auth/session-provider";
 
 export function useCurrentUser() {
-  const { data: session, status } = useSession();
+  const { user, status } = useSession();
 
   return {
-    user: session?.user,
-    role: (session as any)?.role as string | undefined,
-    orgId: (session as any)?.orgId as string | undefined,
-    orgType: (session as any)?.orgType as string | undefined,
-    disclaimerAcknowledged: (session as any)?.disclaimerAcknowledged as boolean | undefined,
+    user: user ? { name: user.name, email: user.email } : undefined,
+    role: user?.role ?? undefined,
+    orgId: user?.orgId ?? undefined,
+    orgType: user?.orgType ?? undefined,
+    disclaimerAcknowledged: user?.disclaimerAcknowledged ?? undefined,
     isLoading: status === "loading",
     isAuthenticated: status === "authenticated",
   };

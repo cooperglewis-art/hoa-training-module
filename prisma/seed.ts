@@ -286,17 +286,16 @@ async function main() {
         },
         {
           type: "prose",
-          text: "I tell every board member the same thing on day one: before you enforce a single restriction, you need to know where it comes from and where it sits in the pecking order. Texas community associations operate under a strict hierarchy of authority. When two documents conflict, the higher one wins — every time. Getting this wrong is the number one way boards get themselves into legal trouble.",
+          html: "I tell every board member the same thing on day one: before you enforce a single restriction, you need to know where it comes from and where it sits in the pecking order. Texas community associations operate under a strict hierarchy of authority. When two documents conflict, the higher one wins — every time. Getting this wrong is the number one way boards get themselves into legal trouble.",
         },
         {
           type: "callout",
           variant: "info",
           title: "The Golden Rule of Enforcement",
-          text: "If you cannot point to a specific written provision in your governing documents that prohibits the conduct in question, you do not have an enforceable violation. Period. Good intentions and community preferences are not a substitute for a recorded covenant.",
+          body: "If you cannot point to a specific written provision in your governing documents that prohibits the conduct in question, you do not have an enforceable violation. Period. Good intentions and community preferences are not a substitute for a recorded covenant.",
         },
         {
           type: "comparison-table",
-          title: "The Document Hierarchy — From Highest to Lowest Authority",
           headers: ["Level", "Document", "What It Controls", "How It's Changed"],
           rows: [
             ["1 (Highest)", "Federal & Texas Law", "Constitutional rights, Property Code, FCC rules", "Legislative process only"],
@@ -309,22 +308,23 @@ async function main() {
         },
         {
           type: "prose",
-          text: "Your CC&Rs — the Declaration of Covenants, Conditions, and Restrictions — are the foundational private-law document for your community. They are recorded in the county deed records and 'run with the land,' meaning they bind every current and future owner. Your CC&Rs establish what homeowners can and cannot do with their property, your assessment authority, and your power to enforce. The Bylaws, by contrast, govern how the association operates internally — board elections, meeting procedures, quorums. They do not create property use restrictions. And Rules & Regulations? Those are adopted by the board to implement the CC&Rs. They must be consistent with the CC&Rs. A board rule that contradicts your Declaration is unenforceable.",
+          html: "Your CC&Rs — the Declaration of Covenants, Conditions, and Restrictions — are the foundational private-law document for your community. They are recorded in the county deed records and 'run with the land,' meaning they bind every current and future owner. Your CC&Rs establish what homeowners can and cannot do with their property, your assessment authority, and your power to enforce. The Bylaws, by contrast, govern how the association operates internally — board elections, meeting procedures, quorums. They do not create property use restrictions. And Rules & Regulations? Those are adopted by the board to implement the CC&Rs. They must be consistent with the CC&Rs. A board rule that contradicts your Declaration is unenforceable.",
         },
         {
           type: "scenario",
           title: "When the Board Overstepped: A Real-World Example",
-          text: "Oakwood Estates HOA's CC&Rs state that homeowners may keep 'common household pets.' The board passed a rule prohibiting all dogs over 30 pounds. A homeowner with a 50-pound Labrador challenged the rule. Because the CC&Rs use a broad, permissive term, and a Labrador is unquestionably a 'common household pet,' the board's rule contradicted the Declaration. A court would find that rule unenforceable. The board could adopt reasonable rules about pet behavior — leash requirements, waste cleanup — that supplement the CC&Rs. But they cannot use a board-adopted rule to effectively amend the CC&Rs without going through the formal amendment process.",
+          situation: "Oakwood Estates HOA's CC&Rs state that homeowners may keep 'common household pets.' The board passed a rule prohibiting all dogs over 30 pounds. A homeowner with a 50-pound Labrador challenged the rule. Because the CC&Rs use a broad, permissive term, and a Labrador is unquestionably a 'common household pet,' the board's rule contradicted the Declaration. A court would find that rule unenforceable. The board could adopt reasonable rules about pet behavior — leash requirements, waste cleanup — that supplement the CC&Rs. But they cannot use a board-adopted rule to effectively amend the CC&Rs without going through the formal amendment process.",
+          revealText: "Consider how the document hierarchy and consistent enforcement principles apply to this situation.",
         },
         {
           type: "callout",
           variant: "warning",
           title: "Ambiguity Favors the Homeowner",
-          text: "Texas courts construe ambiguous restrictive covenants in favor of the free use of property. If your CC&R provision can reasonably be read two ways, the interpretation that imposes fewer restrictions on the homeowner will prevail. This is why precise drafting matters — and why boards should consult counsel before enforcing a provision they are not 100% certain about.",
+          body: "Texas courts construe ambiguous restrictive covenants in favor of the free use of property. If your CC&R provision can reasonably be read two ways, the interpretation that imposes fewer restrictions on the homeowner will prevail. This is why precise drafting matters — and why boards should consult counsel before enforcing a provision they are not 100% certain about.",
         },
         {
           type: "prose",
-          text: "Keep this hierarchy in your mind for every enforcement decision. Always start by asking: 'What does the governing document at the correct level of the hierarchy actually say?' If you cannot point to a clear, specific provision, you do not have a basis for enforcement — and moving forward anyway exposes your association to significant legal risk.",
+          html: "Keep this hierarchy in your mind for every enforcement decision. Always start by asking: 'What does the governing document at the correct level of the hierarchy actually say?' If you cannot point to a clear, specific provision, you do not have a basis for enforcement — and moving forward anyway exposes your association to significant legal risk.",
         },
       ],
     },
@@ -344,18 +344,16 @@ async function main() {
         },
         {
           type: "prose",
-          text: "Now that you understand the document hierarchy, let me walk you through the Texas statutes that sit above your CC&Rs and control how you can enforce them. There are three chapters of the Texas Property Code that every board member must know: Chapter 202 (restrictive covenants generally), Chapter 209 (the Texas Residential Property Owners Protection Act — this is the big one for HOAs and POAs), and Chapter 82 (the Uniform Condominium Act for COAs). These statutes are not optional. They override your CC&Rs where they conflict.",
+          html: "Now that you understand the document hierarchy, let me walk you through the Texas statutes that sit above your CC&Rs and control how you can enforce them. There are three chapters of the Texas Property Code that every board member must know: Chapter 202 (restrictive covenants generally), Chapter 209 (the Texas Residential Property Owners Protection Act — this is the big one for HOAs and POAs), and Chapter 82 (the Uniform Condominium Act for COAs). These statutes are not optional. They override your CC&Rs where they conflict.",
         },
         {
           type: "statute-callout",
           statute: "Tex. Prop. Code § 209.007",
-          title: "Notice & Hearing Before Fines — The Most Important Statute You'll Learn",
-          text: "Before your association may levy a fine, suspend an owner's rights, or file suit (other than for unpaid assessments), you MUST: (1) Send written notice by certified mail describing the specific violation, (2) Give the owner at least 30 days to cure the violation, and (3) If not cured, provide notice of a hearing before the board or a board-appointed committee where the owner may attend and present their case. Skip any of these steps, and your entire enforcement action can be thrown out.",
+          summary: "Before your association may levy a fine, suspend an owner's rights, or file suit (other than for unpaid assessments), you MUST: (1) Send written notice by certified mail describing the specific violation, (2) Give the owner at least 30 days to cure the violation, and (3) If not cured, provide notice of a hearing before the board or a board-appointed committee where the owner may attend and present their case. Skip any of these steps, and your entire enforcement action can be thrown out.",
           appliesTo: ["HOA", "POA"],
         },
         {
           type: "comparison-table",
-          title: "Key Statutory Protections You Must Follow",
           headers: ["Statute", "What It Requires", "Consequence of Non-Compliance"],
           rows: [
             ["§ 209.007 — Notice & Hearing", "30-day cure period + hearing before fines", "Fine is void; enforcement action invalidated"],
@@ -369,22 +367,23 @@ async function main() {
           type: "callout",
           variant: "info",
           title: "COA Boards: Chapter 82 Is Different",
-          text: "If you govern a condominium association, Chapter 82 — not Chapter 209 — is your primary statute. Chapter 82 is less prescriptive on enforcement procedures, which means your Declaration's own procedural requirements are especially important. Many condominium declarations voluntarily incorporate Chapter 209-style protections. Always check your specific Declaration — the procedures it requires may exceed the statutory minimum.",
+          body: "If you govern a condominium association, Chapter 82 — not Chapter 209 — is your primary statute. Chapter 82 is less prescriptive on enforcement procedures, which means your Declaration's own procedural requirements are especially important. Many condominium declarations voluntarily incorporate Chapter 209-style protections. Always check your specific Declaration — the procedures it requires may exceed the statutory minimum.",
         },
         {
           type: "scenario",
           title: "The $10,000 Records Mistake",
-          text: "A homeowner at Sunset Pointe POA sends a written request for association financial records and meeting minutes. The board president, annoyed by what he considers a 'troublemaker,' ignores the request. Under § 209.006, the association must respond within 10 business days. For every day beyond the deadline, the association faces a penalty of $500 per day, up to $10,000 — recoverable by the homeowner in court. Ignoring a records request is never worth it. Even if you believe the request is burdensome, respond within the statutory timeframe and provide what is required.",
+          situation: "A homeowner at Sunset Pointe POA sends a written request for association financial records and meeting minutes. The board president, annoyed by what he considers a 'troublemaker,' ignores the request. Under § 209.006, the association must respond within 10 business days. For every day beyond the deadline, the association faces a penalty of $500 per day, up to $10,000 — recoverable by the homeowner in court. Ignoring a records request is never worth it. Even if you believe the request is burdensome, respond within the statutory timeframe and provide what is required.",
+          revealText: "Consider how the document hierarchy and consistent enforcement principles apply to this situation.",
         },
         {
           type: "callout",
           variant: "warning",
           title: "State Law Trumps Your CC&Rs",
-          text: "I cannot stress this enough: even if your CC&Rs say something different, the Texas Property Code controls. If your CC&Rs allow fines without a hearing, Chapter 209 still requires one. If your CC&Rs ban flag displays, § 202.010 makes that restriction void. Your CC&Rs can impose stricter requirements than the statute, but they cannot provide less protection than the law guarantees to homeowners.",
+          body: "I cannot stress this enough: even if your CC&Rs say something different, the Texas Property Code controls. If your CC&Rs allow fines without a hearing, Chapter 209 still requires one. If your CC&Rs ban flag displays, § 202.010 makes that restriction void. Your CC&Rs can impose stricter requirements than the statute, but they cannot provide less protection than the law guarantees to homeowners.",
         },
         {
           type: "prose",
-          text: "Understanding these statutes is not just about compliance — it is about protecting your association. Every procedural shortcut you take is an opportunity for a homeowner to challenge your enforcement action in court and win. Follow the statute, follow your CC&Rs, and you will have a defensible enforcement program. Now let's test your understanding of Module 1.",
+          html: "Understanding these statutes is not just about compliance — it is about protecting your association. Every procedural shortcut you take is an opportunity for a homeowner to challenge your enforcement action in court and win. Follow the statute, follow your CC&Rs, and you will have a defensible enforcement program. Now let's test your understanding of Module 1.",
         },
       ],
     },
@@ -404,7 +403,7 @@ async function main() {
         },
         {
           type: "prose",
-          text: "Let's make sure you have the fundamentals down before we move on to the enforcement process.",
+          html: "Let's make sure you have the fundamentals down before we move on to the enforcement process.",
         },
         {
           type: "knowledge-check",
@@ -416,12 +415,10 @@ async function main() {
             "Texas law prohibits all HOA short-term rental restrictions.",
           ],
           correctIndex: 1,
-          explanation: "Texas courts have held that a total prohibition on a previously permitted use may constitute an improper amendment of the CC&Rs. While boards have broad rulemaking power, rules that fundamentally alter an owner's property rights typically require a formal CC&R amendment approved by the membership. The board can regulate rentals (minimum lease terms, registration requirements) but an outright ban likely crosses the line from 'rule' into 'amendment.'",
+          gateNext: true,
         },
         {
           type: "checkpoint",
-          moduleIndex: 0,
-          title: "Module 1 Checkpoint",
           question: "If a board-adopted rule contradicts a provision in the recorded CC&Rs, which document controls?",
           options: [
             "The board-adopted rule, because it is more recent.",
@@ -430,7 +427,7 @@ async function main() {
             "Neither — the conflict must be resolved by a court.",
           ],
           correctIndex: 1,
-          explanation: "The CC&Rs always take precedence over board-adopted rules in the document hierarchy. A rule that contradicts the CC&Rs is unenforceable. The board must follow the formal amendment process to change a CC&R provision.",
+          gateNext: true,
         },
       ],
     },
@@ -454,17 +451,16 @@ async function main() {
         },
         {
           type: "prose",
-          text: "In my years of practice, I have seen more enforcement actions fail because of bad documentation than bad facts. Before you send a single letter, you need to do two things: first, identify the exact CC&R provision being violated — and I mean the specific section and paragraph. Second, document the violation so thoroughly that it could stand up in front of a judge. If you cannot do both of these things, you are not ready to enforce.",
+          html: "In my years of practice, I have seen more enforcement actions fail because of bad documentation than bad facts. Before you send a single letter, you need to do two things: first, identify the exact CC&R provision being violated — and I mean the specific section and paragraph. Second, document the violation so thoroughly that it could stand up in front of a judge. If you cannot do both of these things, you are not ready to enforce.",
         },
         {
           type: "callout",
           variant: "info",
           title: "The Specificity Rule in Texas",
-          text: "Texas courts construe restrictive covenants strictly. If your CC&R provision is vague or ambiguous, a court will interpret it in favor of the homeowner's free use of their property. 'Maintain your yard in good condition' is harder to enforce than 'Lawn height shall not exceed 8 inches.' The more specific your provision, the stronger your enforcement position.",
+          body: "Texas courts construe restrictive covenants strictly. If your CC&R provision is vague or ambiguous, a court will interpret it in favor of the homeowner's free use of their property. 'Maintain your yard in good condition' is harder to enforce than 'Lawn height shall not exceed 8 inches.' The more specific your provision, the stronger your enforcement position.",
         },
         {
           type: "comparison-table",
-          title: "Good vs. Bad Documentation — What I See in My Practice",
           headers: ["Element", "What Gets You in Trouble", "What Holds Up in Court"],
           rows: [
             ["Description", "Yard looks terrible", "Front lawn exceeds 8 inches in height; violation of Declaration Section 5.3(a)"],
@@ -476,22 +472,23 @@ async function main() {
         },
         {
           type: "prose",
-          text: "Every violation should have its own file containing: the initial report, the specific CC&R section cited, date-stamped photographs taken from public areas, all correspondence, hearing minutes, and the final disposition. This file is your evidence trail. It is what your attorney will use if the matter escalates. And here is the critical point many boards miss — you must enforce consistently. If you enforce against one homeowner but ignore the same violation by five others, you have just handed every future violator the 'selective enforcement' defense.",
+          html: "Every violation should have its own file containing: the initial report, the specific CC&R section cited, date-stamped photographs taken from public areas, all correspondence, hearing minutes, and the final disposition. This file is your evidence trail. It is what your attorney will use if the matter escalates. And here is the critical point many boards miss — you must enforce consistently. If you enforce against one homeowner but ignore the same violation by five others, you have just handed every future violator the 'selective enforcement' defense.",
         },
         {
           type: "scenario",
           title: "The Selective Enforcement Trap",
-          text: "Riverwalk HOA has a CC&R provision prohibiting fences taller than 6 feet. Over five years, six homeowners built 7-foot fences and the board took no action. When a seventh homeowner does the same, the board sends a violation notice. The homeowner raises the selective enforcement defense. Because the board knowingly allowed six prior violations, a court may find the board has waived its right to enforce — or at minimum, must begin enforcement against all violators simultaneously. I tell my clients: enforce early, enforce consistently, or risk losing the ability to enforce at all.",
+          situation: "Riverwalk HOA has a CC&R provision prohibiting fences taller than 6 feet. Over five years, six homeowners built 7-foot fences and the board took no action. When a seventh homeowner does the same, the board sends a violation notice. The homeowner raises the selective enforcement defense. Because the board knowingly allowed six prior violations, a court may find the board has waived its right to enforce — or at minimum, must begin enforcement against all violators simultaneously. I tell my clients: enforce early, enforce consistently, or risk losing the ability to enforce at all.",
+          revealText: "Consider how the document hierarchy and consistent enforcement principles apply to this situation.",
         },
         {
           type: "callout",
           variant: "warning",
           title: "Never Trespass to Document",
-          text: "All observations and photographs must be taken from public areas — streets, sidewalks, or common areas. Never enter a homeowner's backyard or private property without permission to photograph a violation. Never use hidden cameras or surveillance targeting a specific homeowner. The privacy liability can far exceed the value of the enforcement action.",
+          body: "All observations and photographs must be taken from public areas — streets, sidewalks, or common areas. Never enter a homeowner's backyard or private property without permission to photograph a violation. Never use hidden cameras or surveillance targeting a specific homeowner. The privacy liability can far exceed the value of the enforcement action.",
         },
         {
           type: "prose",
-          text: "Think of documentation as building a case file, because that is exactly what it may become. Every photograph, every date, every citation to a CC&R section is a brick in the wall of your enforcement position. Build it right from the start, and you will rarely have problems down the road.",
+          html: "Think of documentation as building a case file, because that is exactly what it may become. Every photograph, every date, every citation to a CC&R section is a brick in the wall of your enforcement position. Build it right from the start, and you will rarely have problems down the road.",
         },
       ],
     },
@@ -511,34 +508,29 @@ async function main() {
         },
         {
           type: "prose",
-          text: "This is where most associations get into trouble, and it is entirely preventable. Chapter 209 lays out a clear, step-by-step process that you must follow before you can levy a fine or take enforcement action. I am going to walk you through each step, because if you skip even one of them, your entire enforcement action can be thrown out in court.",
+          html: "This is where most associations get into trouble, and it is entirely preventable. Chapter 209 lays out a clear, step-by-step process that you must follow before you can levy a fine or take enforcement action. I am going to walk you through each step, because if you skip even one of them, your entire enforcement action can be thrown out in court.",
         },
         {
           type: "timeline",
           title: "The Chapter 209 Enforcement Process — Follow Every Step",
-          events: [
+          steps: [
             {
-              label: "Step 1",
               title: "Send First Written Notice (Certified Mail)",
               description: "Describe the specific violation, cite the CC&R provision, and give the homeowner at least 30 days to cure. This notice MUST be sent by certified mail — regular mail, email, or a door notice does not satisfy the statute.",
             },
             {
-              label: "Step 2",
               title: "Wait the Full 30-Day Cure Period",
               description: "The homeowner has at least 30 days to fix the violation. Document whether it is cured during this period. You cannot shorten this timeline — 30 days is the statutory minimum.",
             },
             {
-              label: "Step 3",
               title: "Send Second Notice of Hearing (If Not Cured)",
               description: "If the violation continues, send a second certified mail notice informing the homeowner of a hearing date, time, and location, and their right to attend and present their case.",
             },
             {
-              label: "Step 4",
               title: "Conduct the Hearing",
               description: "Present your evidence. Let the homeowner respond. Take detailed minutes. Even if the homeowner does not attend, you may proceed — the statute requires you to provide the opportunity, not to guarantee attendance.",
             },
             {
-              label: "Step 5",
               title: "Issue Written Decision",
               description: "After deliberation, send the homeowner a written decision including findings, the fine amount, and the CC&R provision violated. Send by certified mail.",
             },
@@ -547,23 +539,24 @@ async function main() {
         {
           type: "scenario",
           title: "The Notice That Got Everything Wrong",
-          text: "Meadowbrook POA sends a homeowner this notice: 'Your property is not in compliance with community standards. Please correct the situation within 10 days or fines will be assessed.' This notice fails on every level: it does not identify the specific violation, does not cite a CC&R provision, gives only 10 days instead of the required 30, threatens fines without mentioning a hearing, and was sent by regular mail instead of certified. Any fine based on this notice would be thrown out immediately. Always use a standardized template reviewed by your attorney.",
+          situation: "Meadowbrook POA sends a homeowner this notice: 'Your property is not in compliance with community standards. Please correct the situation within 10 days or fines will be assessed.' This notice fails on every level: it does not identify the specific violation, does not cite a CC&R provision, gives only 10 days instead of the required 30, threatens fines without mentioning a hearing, and was sent by regular mail instead of certified. Any fine based on this notice would be thrown out immediately. Always use a standardized template reviewed by your attorney.",
+          revealText: "Consider how the document hierarchy and consistent enforcement principles apply to this situation.",
         },
         {
           type: "callout",
           variant: "info",
           title: "Fine Authority & Foreclosure Limits",
-          text: "Your authority to levy fines must come from the CC&Rs or bylaws — the board cannot create fine authority that does not exist in the governing documents. And here is a critical limitation many boards do not know: under § 209.009, you CANNOT foreclose on a property for unpaid fines alone. Foreclosure is reserved for unpaid assessments. If a homeowner owes $5,000 in fines and $0 in assessments, your only option for collection is a civil lawsuit.",
+          body: "Your authority to levy fines must come from the CC&Rs or bylaws — the board cannot create fine authority that does not exist in the governing documents. And here is a critical limitation many boards do not know: under § 209.009, you CANNOT foreclose on a property for unpaid fines alone. Foreclosure is reserved for unpaid assessments. If a homeowner owes $5,000 in fines and $0 in assessments, your only option for collection is a civil lawsuit.",
         },
         {
           type: "callout",
           variant: "warning",
           title: "Certified Mail Is Not Optional",
-          text: "I have seen associations lose enforcement actions because they sent violation notices by email or regular mail. Chapter 209 requires certified mail. Keep your certified mail receipts in the violation file — they are proof that you followed the law. No receipt, no proof, no enforcement.",
+          body: "I have seen associations lose enforcement actions because they sent violation notices by email or regular mail. Chapter 209 requires certified mail. Keep your certified mail receipts in the violation file — they are proof that you followed the law. No receipt, no proof, no enforcement.",
         },
         {
           type: "prose",
-          text: "Follow the process. Every step, every time. It takes more effort up front, but it protects your association from costly legal challenges. Now let's test your understanding of the enforcement process.",
+          html: "Follow the process. Every step, every time. It takes more effort up front, but it protects your association from costly legal challenges. Now let's test your understanding of the enforcement process.",
         },
       ],
     },
@@ -583,7 +576,7 @@ async function main() {
         },
         {
           type: "prose",
-          text: "Let's make sure you understand the enforcement process before we move on to pre-lawsuit strategies.",
+          html: "Let's make sure you understand the enforcement process before we move on to pre-lawsuit strategies.",
         },
         {
           type: "knowledge-check",
@@ -595,12 +588,10 @@ async function main() {
             "It depends on the severity of the violation.",
           ],
           correctIndex: 1,
-          explanation: "Chapter 209 mandates a minimum 30-day cure period. A 15-day cure period violates the statute regardless of how properly the notice was delivered or how clear the violation is. The cure deadline should be at least March 31. Your CC&Rs cannot shorten a statutory minimum — the Property Code overrides the CC&Rs in the document hierarchy.",
+          gateNext: true,
         },
         {
           type: "checkpoint",
-          moduleIndex: 1,
-          title: "Module 2 Checkpoint",
           question: "Under Texas Property Code Chapter 209, what is the minimum cure period that must be provided in a violation notice before a fine can be levied?",
           options: [
             "10 days",
@@ -609,7 +600,7 @@ async function main() {
             "60 days",
           ],
           correctIndex: 2,
-          explanation: "Chapter 209 requires at least 30 days for the homeowner to cure the violation. This is a statutory minimum that cannot be shortened by the CC&Rs or board rules.",
+          gateNext: true,
         },
       ],
     },
@@ -633,17 +624,16 @@ async function main() {
         },
         {
           type: "prose",
-          text: "Not every violation needs a lawyer. Most violations resolve themselves through the standard notice-and-cure process. But when they do not — when the homeowner refuses to comply, retains counsel, or raises complex legal defenses — you need to know when to escalate, and you need your evidence in order before you do. I tell my clients: the time to build your case file is at the beginning, not when you are already in a dispute.",
+          html: "Not every violation needs a lawyer. Most violations resolve themselves through the standard notice-and-cure process. But when they do not — when the homeowner refuses to comply, retains counsel, or raises complex legal defenses — you need to know when to escalate, and you need your evidence in order before you do. I tell my clients: the time to build your case file is at the beginning, not when you are already in a dispute.",
         },
         {
           type: "callout",
           variant: "warning",
           title: "The Litigation Hold — Do Not Destroy Evidence",
-          text: "Once you reasonably anticipate that a matter may result in litigation, you have a legal duty to preserve all relevant evidence. This means emails, text messages, photographs, meeting minutes, and correspondence — all of it. Deleting records after a dispute arises can constitute spoliation of evidence, and a court may instruct the jury to assume the destroyed evidence was unfavorable to your association. Issue a litigation hold to your board, management company, and anyone with relevant records.",
+          body: "Once you reasonably anticipate that a matter may result in litigation, you have a legal duty to preserve all relevant evidence. This means emails, text messages, photographs, meeting minutes, and correspondence — all of it. Deleting records after a dispute arises can constitute spoliation of evidence, and a court may instruct the jury to assume the destroyed evidence was unfavorable to your association. Issue a litigation hold to your board, management company, and anyone with relevant records.",
         },
         {
           type: "comparison-table",
-          title: "When to Handle Internally vs. When to Escalate to Counsel",
           headers: ["Factor", "Handle Internally", "Call Your Attorney"],
           rows: [
             ["Homeowner response", "Communicating, attempting to cure", "Unresponsive, hostile, or has retained counsel"],
@@ -656,22 +646,23 @@ async function main() {
         },
         {
           type: "prose",
-          text: "Here is something many boards do not understand: paying a fine does not resolve an ongoing violation. If a homeowner pays every fine you assess but keeps operating a commercial business out of their garage, fines are not getting the job done. At that point, you need injunctive relief — a court order that actually requires the homeowner to stop the prohibited activity. That requires legal counsel and likely litigation.",
+          html: "Here is something many boards do not understand: paying a fine does not resolve an ongoing violation. If a homeowner pays every fine you assess but keeps operating a commercial business out of their garage, fines are not getting the job done. At that point, you need injunctive relief — a court order that actually requires the homeowner to stop the prohibited activity. That requires legal counsel and likely litigation.",
         },
         {
           type: "scenario",
           title: "The Daycare Dilemma — When It's Not Black and White",
-          text: "Heritage Hills POA has a homeowner running an in-home daycare, in apparent violation of Section 3.1 prohibiting 'commercial use.' The board sent notice, held a hearing, and assessed $1,500 in fines. The homeowner argues a small in-home daycare is not 'commercial use' and has obtained a county home occupation permit. This is exactly when you need counsel. There is a reasonable argument on both sides about the meaning of 'commercial use.' The homeowner has a government permit that complicates your position. The violation is ongoing despite fines. And your decision will set a precedent for every future home occupation dispute in your community. Do not try to handle this one alone.",
+          situation: "Heritage Hills POA has a homeowner running an in-home daycare, in apparent violation of Section 3.1 prohibiting 'commercial use.' The board sent notice, held a hearing, and assessed $1,500 in fines. The homeowner argues a small in-home daycare is not 'commercial use' and has obtained a county home occupation permit. This is exactly when you need counsel. There is a reasonable argument on both sides about the meaning of 'commercial use.' The homeowner has a government permit that complicates your position. The violation is ongoing despite fines. And your decision will set a precedent for every future home occupation dispute in your community. Do not try to handle this one alone.",
+          revealText: "Consider how the document hierarchy and consistent enforcement principles apply to this situation.",
         },
         {
           type: "callout",
           variant: "info",
           title: "The Cost-Benefit Check",
-          text: "Before escalating, do an honest cost-benefit analysis. Legal action typically costs $10,000-$50,000+. Compare that against the fine amount, the community impact, and the precedent value. Sometimes a negotiated compromise is the smarter play — even if you have the stronger legal position. Your attorney can help you evaluate this tradeoff.",
+          body: "Before escalating, do an honest cost-benefit analysis. Legal action typically costs $10,000-$50,000+. Compare that against the fine amount, the community impact, and the precedent value. Sometimes a negotiated compromise is the smarter play — even if you have the stronger legal position. Your attorney can help you evaluate this tradeoff.",
         },
         {
           type: "prose",
-          text: "Build your evidence from day one. Escalate thoughtfully, not reactively. And when you do escalate, give your attorney a complete, organized case file — every notice, every photograph, every piece of correspondence. The more prepared you are, the more efficiently your attorney can advise you, and the less it will cost your association.",
+          html: "Build your evidence from day one. Escalate thoughtfully, not reactively. And when you do escalate, give your attorney a complete, organized case file — every notice, every photograph, every piece of correspondence. The more prepared you are, the more efficiently your attorney can advise you, and the less it will cost your association.",
         },
       ],
     },
@@ -691,18 +682,16 @@ async function main() {
         },
         {
           type: "prose",
-          text: "Before your association files a lawsuit, Texas law requires you to take one more step. Under Chapter 209, you must make a written offer of Alternative Dispute Resolution (ADR) to the homeowner and give them 30 days to accept. This is not optional — if you skip this step, a court can dismiss your lawsuit. But beyond just satisfying a statutory requirement, ADR is often the best path to a real resolution. In my practice, mediation resolves more HOA disputes than litigation does — and at a fraction of the cost.",
+          html: "Before your association files a lawsuit, Texas law requires you to take one more step. Under Chapter 209, you must make a written offer of Alternative Dispute Resolution (ADR) to the homeowner and give them 30 days to accept. This is not optional — if you skip this step, a court can dismiss your lawsuit. But beyond just satisfying a statutory requirement, ADR is often the best path to a real resolution. In my practice, mediation resolves more HOA disputes than litigation does — and at a fraction of the cost.",
         },
         {
           type: "statute-callout",
           statute: "Tex. Prop. Code § 209.00593",
-          title: "The Mandatory ADR Step Before Filing Suit",
-          text: "Before filing suit against a property owner (other than for unpaid assessments), the association must make a written offer to resolve the dispute through ADR. The homeowner has 30 days to accept. If they decline or do not respond, you have satisfied the prerequisite to filing suit. Send this offer by certified mail and keep the receipt — you must be able to prove you completed this step.",
+          summary: "Before filing suit against a property owner (other than for unpaid assessments), the association must make a written offer to resolve the dispute through ADR. The homeowner has 30 days to accept. If they decline or do not respond, you have satisfied the prerequisite to filing suit. Send this offer by certified mail and keep the receipt — you must be able to prove you completed this step.",
           appliesTo: ["HOA", "POA"],
         },
         {
           type: "comparison-table",
-          title: "Your Options: Mediation vs. Arbitration vs. Litigation",
           headers: ["", "Mediation", "Arbitration", "Litigation"],
           rows: [
             ["Who decides?", "You and the homeowner (mediator facilitates)", "Arbitrator decides", "Judge or jury decides"],
@@ -716,23 +705,24 @@ async function main() {
         {
           type: "scenario",
           title: "Why Mediation Works — A Case from Practice",
-          text: "A homeowner built an enclosed patio without architectural approval. The board assessed $4,500 in fines. The homeowner refused to remove it, citing selective enforcement (similar structures nearby). After a year of back-and-forth, both sides agreed to mediation. The mediator helped them reach a creative solution: the homeowner submits an after-the-fact architectural review, modifies the patio to meet setback requirements, and pays a reduced $1,500 fine. Total mediation cost: $2,000. The litigation alternative would have cost $25,000-$50,000 with an uncertain outcome — and the homeowner and the board would still have to live in the same community afterward.",
+          situation: "A homeowner built an enclosed patio without architectural approval. The board assessed $4,500 in fines. The homeowner refused to remove it, citing selective enforcement (similar structures nearby). After a year of back-and-forth, both sides agreed to mediation. The mediator helped them reach a creative solution: the homeowner submits an after-the-fact architectural review, modifies the patio to meet setback requirements, and pays a reduced $1,500 fine. Total mediation cost: $2,000. The litigation alternative would have cost $25,000-$50,000 with an uncertain outcome — and the homeowner and the board would still have to live in the same community afterward.",
+          revealText: "Consider how the document hierarchy and consistent enforcement principles apply to this situation.",
         },
         {
           type: "callout",
           variant: "info",
           title: "Working Effectively with Your Attorney",
-          text: "Your association's attorney represents the association as an entity — not individual board members. When you engage counsel, provide a complete case file: all notices, correspondence, photographs, hearing minutes, and the specific CC&R provisions at issue. The most cost-effective legal advice is preventive: an hour of attorney time reviewing a violation notice before you send it is far cheaper than litigating a defective enforcement action after the fact.",
+          body: "Your association's attorney represents the association as an entity — not individual board members. When you engage counsel, provide a complete case file: all notices, correspondence, photographs, hearing minutes, and the specific CC&R provisions at issue. The most cost-effective legal advice is preventive: an hour of attorney time reviewing a violation notice before you send it is far cheaper than litigating a defective enforcement action after the fact.",
         },
         {
           type: "callout",
           variant: "warning",
           title: "Protect Attorney-Client Privilege",
-          text: "Communications between the board and your attorney are privileged and confidential. If a board member discloses your attorney's legal advice to the homeowner or the community — whether in an open meeting, an email, or a casual conversation — that privilege may be waived. The homeowner's attorney can then use that advice against you in court. Legal strategy discussions should only occur in closed executive session. This is not a technicality — it can make or break your case.",
+          body: "Communications between the board and your attorney are privileged and confidential. If a board member discloses your attorney's legal advice to the homeowner or the community — whether in an open meeting, an email, or a casual conversation — that privilege may be waived. The homeowner's attorney can then use that advice against you in court. Legal strategy discussions should only occur in closed executive session. This is not a technicality — it can make or break your case.",
         },
         {
           type: "prose",
-          text: "ADR is not a sign of weakness. It is smart governance. Boards that embrace mediation resolve disputes faster, at lower cost, and with less community disruption. And when litigation does become necessary, you will be in a far stronger position if you have followed every procedural step along the way — documentation, notice, hearing, ADR offer — before walking into a courtroom. Let's test your understanding of Module 3.",
+          html: "ADR is not a sign of weakness. It is smart governance. Boards that embrace mediation resolve disputes faster, at lower cost, and with less community disruption. And when litigation does become necessary, you will be in a far stronger position if you have followed every procedural step along the way — documentation, notice, hearing, ADR offer — before walking into a courtroom. Let's test your understanding of Module 3.",
         },
       ],
     },
@@ -752,7 +742,7 @@ async function main() {
         },
         {
           type: "prose",
-          text: "One final question before you move on to the case study assessment.",
+          html: "One final question before you move on to the case study assessment.",
         },
         {
           type: "knowledge-check",
@@ -764,12 +754,10 @@ async function main() {
             "Revoke the homeowner's membership in the association.",
           ],
           correctIndex: 2,
-          explanation: "Payment of fines does not cure an ongoing violation. Fines are a collection remedy, not a compliance remedy. When a homeowner continues a prohibited activity despite paying fines, the association should consider seeking injunctive relief through the courts — a court order that actually requires the homeowner to stop. This requires legal counsel and, under Chapter 209, a written offer of ADR before filing suit.",
+          gateNext: true,
         },
         {
           type: "checkpoint",
-          moduleIndex: 2,
-          title: "Module 3 Checkpoint",
           question: "Under Chapter 209, what must an association do before filing a lawsuit against a homeowner for a covenant violation?",
           options: [
             "Obtain a court order authorizing the lawsuit.",
@@ -778,7 +766,7 @@ async function main() {
             "File a complaint with the Texas Real Estate Commission.",
           ],
           correctIndex: 1,
-          explanation: "Section 209.00593 requires the association to offer ADR in writing before filing suit. The homeowner has 30 days to accept. This mandatory pre-suit step ensures associations explore less costly resolution methods before resorting to litigation.",
+          gateNext: true,
         },
       ],
     },

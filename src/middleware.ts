@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 
 const secret = new TextEncoder().encode(
-  process.env.NEXTAUTH_SECRET || "dev-secret"
+  process.env.NEXTAUTH_SECRET!
 );
 
 async function getSession(req: NextRequest) {

@@ -2,9 +2,17 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { forgotPasswordSchema } from "@/lib/validation/auth";
 import { sendEmail, passwordResetEmailHtml } from "@/lib/email";
+import { rateLimitByIp } from "@/lib/rate-limit";
 
 export async function POST(request: Request) {
   try {
+    if (!rateLimitByIp(request, 5, 60_000)) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again in a minute." },
+        { status: 429 }
+      );
+    }
+
     const body = await request.json();
 
     const result = forgotPasswordSchema.safeParse(body);

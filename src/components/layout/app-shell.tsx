@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useSession } from "next-auth/react";
+import { useSession } from "@/components/auth/session-provider";
 import { cn } from "@/lib/utils";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Topbar } from "@/components/layout/topbar";
@@ -19,11 +19,11 @@ interface AppShellProps {
 }
 
 export function AppShell({ children, role }: AppShellProps) {
-  const { data: session } = useSession();
+  const { user } = useSession();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const userName = session?.user?.name ?? undefined;
+  const userName = user?.name ?? undefined;
 
   return (
     <div className="flex h-screen overflow-hidden bg-[var(--background)]">

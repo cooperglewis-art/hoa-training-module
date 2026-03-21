@@ -88,7 +88,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
           {content && (
             <span className="inline-flex items-center gap-1 text-[var(--muted-foreground)] font-normal">
               <Clock className="h-3.5 w-3.5" />
-              {estimateReadingTime(content.blocks)} min read
+              {estimateReadingTime(content)} min read
             </span>
           )}
         </div>
@@ -99,7 +99,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
 
       {/* Content */}
       {content ? (
-        <LessonRenderer blocks={content.blocks} orgType={orgType} />
+        <LessonRenderer blocks={content} orgType={orgType} />
       ) : (
         <div className="rounded-lg border border-[var(--border)] bg-[var(--muted)] p-8 text-center">
           <p className="text-[var(--muted-foreground)]">

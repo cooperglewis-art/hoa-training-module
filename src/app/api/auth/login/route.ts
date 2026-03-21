@@ -3,13 +3,21 @@ import { compare } from "bcryptjs";
 import { db } from "@/lib/db";
 import { SignJWT } from "jose";
 import { cookies } from "next/headers";
+import { rateLimitByIp } from "@/lib/rate-limit";
 
 const secret = new TextEncoder().encode(
-  process.env.NEXTAUTH_SECRET || "dev-secret"
+  process.env.NEXTAUTH_SECRET!
 );
 
 export async function POST(request: Request) {
   try {
+    if (!rateLimitByIp(request, 10, 60_000)) {
+      return NextResponse.json(
+        { error: "Too many login attempts. Please try again in a minute." },
+        { status: 429 }
+      );
+    }
+
     const { email, password, rememberMe } = await request.json();
 
     if (!email || !password) {

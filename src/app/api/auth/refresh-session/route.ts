@@ -4,7 +4,7 @@ import { jwtVerify, SignJWT } from "jose";
 import { db } from "@/lib/db";
 
 const secret = new TextEncoder().encode(
-  process.env.NEXTAUTH_SECRET || "dev-secret"
+  process.env.NEXTAUTH_SECRET!
 );
 
 export async function POST() {
