@@ -250,14 +250,19 @@ export async function exportLearnersCSV(orgId: string): Promise<string> {
 
   const totalModules = await db.module.count();
 
+  // Get module names for column headers
+  const modules = await db.module.findMany({ orderBy: { sortOrder: "asc" } });
+
   const headers = [
     "Name",
     "Email",
     "Joined",
     "Modules Completed",
+    ...modules.map((mod) => `"${mod.title} Completed"`),
     "Assessment Status",
     "Assessment Score",
     "Certificate Serial",
+    "Certificate Date",
   ];
 
   const rows = memberships.map((m) => {
@@ -267,14 +272,24 @@ export async function exportLearnersCSV(orgId: string): Promise<string> {
     const latestAttempt = m.user.assessmentAttempts[0];
     const cert = m.user.certificates[0];
 
+    // Per-module completion dates
+    const moduleCompletionDates = modules.map((mod) => {
+      const progress = m.user.moduleProgress.find((mp) => mp.moduleId === mod.id);
+      return progress?.completedAt
+        ? progress.completedAt.toISOString().split("T")[0]
+        : "";
+    });
+
     return [
-      m.user.name,
+      `"${m.user.name}"`,
       m.user.email,
       m.joinedAt.toISOString().split("T")[0],
       `${completedModules}/${totalModules}`,
+      ...moduleCompletionDates,
       latestAttempt ? (latestAttempt.passed ? "Passed" : "Attempted") : "Not Started",
       latestAttempt ? `${latestAttempt.score}` : "",
       cert ? cert.serialNumber : "",
+      cert ? cert.issuedAt.toISOString().split("T")[0] : "",
     ];
   });
 

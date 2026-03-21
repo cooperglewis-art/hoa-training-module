@@ -76,31 +76,43 @@ export async function generateCertificatePdf(data: CertificateData): Promise<Uin
     color: brown,
   });
 
-  // Learner name
-  const nameWidth = timesRomanBold.widthOfTextAtSize(data.userName, 30);
+  // Learner name — scale down for long names
+  const maxNameWidth = width - 240;
+  let nameSize = 30;
+  let nameWidth = timesRomanBold.widthOfTextAtSize(data.userName, nameSize);
+  while (nameWidth > maxNameWidth && nameSize > 16) {
+    nameSize -= 2;
+    nameWidth = timesRomanBold.widthOfTextAtSize(data.userName, nameSize);
+  }
   page.drawText(data.userName, {
     x: (width - nameWidth) / 2,
     y: height - 220,
-    size: 30,
+    size: nameSize,
     font: timesRomanBold,
     color: navy,
   });
 
   // Name underline
+  const underlineHalf = Math.max(nameWidth / 2 + 20, 180);
   page.drawLine({
-    start: { x: 200, y: height - 228 },
-    end: { x: width - 200, y: height - 228 },
+    start: { x: width / 2 - underlineHalf, y: height - 228 },
+    end: { x: width / 2 + underlineHalf, y: height - 228 },
     color: gold,
     thickness: 1,
   });
 
-  // Organization
+  // Organization — scale down for long org names
   const orgText = `of ${data.orgName}`;
-  const orgWidth = timesRoman.widthOfTextAtSize(orgText, 16);
+  let orgSize = 16;
+  let orgWidth = timesRoman.widthOfTextAtSize(orgText, orgSize);
+  while (orgWidth > maxNameWidth && orgSize > 10) {
+    orgSize -= 1;
+    orgWidth = timesRoman.widthOfTextAtSize(orgText, orgSize);
+  }
   page.drawText(orgText, {
     x: (width - orgWidth) / 2,
     y: height - 260,
-    size: 16,
+    size: orgSize,
     font: timesRoman,
     color: brown,
   });

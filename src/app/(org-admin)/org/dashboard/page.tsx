@@ -100,9 +100,24 @@ export default async function OrgDashboardPage() {
           <CardTitle className="text-[#002060]">Recent Completions</CardTitle>
         </CardHeader>
         <CardContent>
-          {recentCompletions.length === 0 ? (
-            <p className="text-sm text-[var(--muted-foreground)]">
-              No completions yet. Invite learners to get started.
+          {totalLearners === 0 ? (
+            <div className="text-center py-12">
+              <Users className="h-12 w-12 mx-auto text-[var(--muted-foreground)]/40 mb-4" />
+              <h3 className="text-lg font-semibold text-[var(--foreground)] mb-2">No learners yet</h3>
+              <p className="text-sm text-[var(--muted-foreground)] mb-4 max-w-sm mx-auto">
+                Invite your team to start the CCR Enforcement Training. They will appear here once they register.
+              </p>
+              <a
+                href="/org/invites"
+                className="inline-flex items-center gap-2 bg-[var(--primary)] text-[var(--primary-foreground)] px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
+              >
+                <UserCheck className="h-4 w-4" />
+                Send Invitations
+              </a>
+            </div>
+          ) : recentCompletions.length === 0 ? (
+            <p className="text-sm text-[var(--muted-foreground)] py-6 text-center">
+              No completions yet. Learners are enrolled — completions will appear here as they finish the course.
             </p>
           ) : (
             <div className="space-y-3">

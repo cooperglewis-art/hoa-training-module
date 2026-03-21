@@ -66,8 +66,14 @@ export function LearnerTable({ learners, onExportCSV }: LearnerTableProps) {
         <TableBody>
           {learners.length === 0 && (
             <TableRow>
-              <TableCell colSpan={6} className="text-center text-[var(--muted-foreground)] py-8">
-                No learners found.
+              <TableCell colSpan={6} className="text-center py-12">
+                <p className="text-[var(--muted-foreground)] mb-2">No learners have enrolled yet.</p>
+                <a
+                  href="/org/invites"
+                  className="text-sm text-[var(--primary)] hover:underline"
+                >
+                  Send invitations to get started
+                </a>
               </TableCell>
             </TableRow>
           )}

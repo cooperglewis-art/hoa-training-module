@@ -14,6 +14,7 @@ import {
 import { formatDate } from "@/lib/utils";
 import { Mail, Link as LinkIcon } from "lucide-react";
 import { CreateInviteForm } from "./create-invite-form";
+import { BulkInviteUpload } from "./bulk-invite-upload";
 import { CopyLinkButton } from "./copy-link-button";
 
 export default async function OrgInvitesPage() {
@@ -49,7 +50,10 @@ export default async function OrgInvitesPage() {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
-        <CreateInviteForm orgId={orgId} />
+        <div className="space-y-6">
+          <CreateInviteForm orgId={orgId} />
+          <BulkInviteUpload orgId={orgId} />
+        </div>
 
         <div className="lg:col-span-2">
           <Card>

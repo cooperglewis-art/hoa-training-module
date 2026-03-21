@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { EB_Garamond, Inter } from "next/font/google";
 import { CustomSessionProvider } from "@/components/auth/session-provider";
+import { ErrorBoundary } from "@/components/error-boundary";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
@@ -40,7 +41,9 @@ export default function RootLayout({
       >
         <ThemeProvider>
           <CustomSessionProvider>
-            {children}
+            <ErrorBoundary>
+              {children}
+            </ErrorBoundary>
             <Toaster />
           </CustomSessionProvider>
         </ThemeProvider>

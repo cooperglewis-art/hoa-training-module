@@ -97,7 +97,7 @@ export function DragDropMatchBlock({ pairs }: DragDropMatchBlockProps) {
         </p>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Left column */}
           <div className="space-y-2">
             {pairs.map((pair, index) => {
@@ -109,7 +109,14 @@ export function DragDropMatchBlock({ pairs }: DragDropMatchBlockProps) {
                 <button
                   key={`left-${index}`}
                   onClick={() => handleLeftClick(index)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      handleLeftClick(index);
+                    }
+                  }}
                   disabled={isMatched || submitted}
+                  aria-pressed={selectedLeft === index}
                   className={cn(
                     "w-full rounded-lg border p-3 text-left text-sm transition-colors",
                     selectedLeft === index
@@ -154,7 +161,14 @@ export function DragDropMatchBlock({ pairs }: DragDropMatchBlockProps) {
                 <button
                   key={`right-${index}`}
                   onClick={() => handleRightClick(index)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      handleRightClick(index);
+                    }
+                  }}
                   disabled={isMatched || submitted || selectedLeft === null}
+                  aria-label={`Match option: ${item.text}`}
                   className={cn(
                     "w-full rounded-lg border p-3 text-left text-sm transition-colors",
                     isMatched && !submitted
