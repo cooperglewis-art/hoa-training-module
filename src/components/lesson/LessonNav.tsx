@@ -13,6 +13,7 @@ interface LessonNavProps {
   lessonId: string;
   prevLesson: { id: string; title: string } | null;
   nextLesson: { id: string; title: string } | null;
+  nextModule: { id: string; title: string; sortOrder: number } | null;
   isCurrentComplete: boolean;
 }
 
@@ -21,6 +22,7 @@ export function LessonNav({
   lessonId,
   prevLesson,
   nextLesson,
+  nextModule,
   isCurrentComplete,
 }: LessonNavProps) {
   const [isPending, startTransition] = useTransition();
@@ -37,8 +39,10 @@ export function LessonNav({
       }
       if (nextLesson) {
         router.push(`/module/${moduleId}/lesson/${nextLesson.id}`);
+      } else if (nextModule) {
+        router.push(`/module/${nextModule.id}`);
       } else {
-        router.push(`/module/${moduleId}`);
+        router.push("/dashboard");
       }
     });
   }
@@ -65,12 +69,14 @@ export function LessonNav({
         <div />
       )}
 
-      <Button onClick={handleNext} disabled={isPending} className="gap-2">
+      <Button onClick={handleNext} disabled={isPending} className="gap-2" size="lg">
         {isPending
           ? "Saving..."
           : nextLesson
             ? "Next Lesson"
-            : "Complete Module"}
+            : nextModule
+              ? `Next: Module ${nextModule.sortOrder}`
+              : "Finish & Return to Dashboard"}
         {!isPending && <ArrowRight className="h-4 w-4" />}
       </Button>
       </div>

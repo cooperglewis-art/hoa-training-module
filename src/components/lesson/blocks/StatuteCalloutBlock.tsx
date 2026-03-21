@@ -14,21 +14,21 @@ export function StatuteCalloutBlock({
   appliesTo,
 }: StatuteCalloutBlockProps) {
   return (
-    <div className="rounded-lg border-l-4 border-l-[var(--primary)] bg-[var(--primary)]/5 p-4">
+    <div className="rounded-lg border-l-4 border-l-[var(--primary)] bg-indigo-50 dark:bg-indigo-950/30 p-5">
       <div className="flex items-start gap-3">
         <Gavel className="mt-0.5 h-5 w-5 flex-shrink-0 text-[var(--primary)]" />
         <div className="min-w-0">
           <p className="font-serif font-semibold text-[var(--foreground)]">
             {statute}
           </p>
-          <p className="mt-1 text-sm leading-relaxed text-[var(--foreground)]/80">
+          <p className="mt-2 text-sm leading-relaxed text-gray-700 dark:text-gray-300">
             {summary}
           </p>
-          <div className="mt-2 flex flex-wrap gap-1.5">
+          <div className="mt-3 flex flex-wrap gap-1.5">
             {appliesTo.map((type) => (
               <span
                 key={type}
-                className="inline-block rounded-full bg-[var(--primary)]/10 px-2 py-0.5 text-xs font-medium text-[var(--primary)]"
+                className="inline-block rounded-full bg-[var(--primary)]/15 px-2.5 py-0.5 text-xs font-medium text-[var(--primary)]"
               >
                 {ORG_TYPES[type]}
               </span>

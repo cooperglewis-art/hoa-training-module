@@ -314,6 +314,7 @@ async function main() {
           type: "scenario",
           title: "The 30-Pound Dog Rule",
           situation: "Oakwood Estates HOA's CC&Rs say homeowners may keep 'common household pets.' The board passes a rule banning all dogs over 30 pounds. A homeowner with a 50-pound Labrador fights back.",
+          question: "Can a board-adopted rule override what the CC&Rs allow? What happens when the two conflict?",
           revealText: "The board's rule contradicts the CC&Rs. A Labrador is clearly a 'common household pet,' so the 30-pound limit is unenforceable. The board could regulate pet behavior (leashes, waste cleanup), but it can't use a simple board rule to effectively rewrite the CC&Rs. That requires a formal amendment vote by the membership.",
         },
         {
@@ -362,7 +363,8 @@ async function main() {
         {
           type: "scenario",
           title: "The $10,000 Ignored Email",
-          situation: "A homeowner requests financial records and meeting minutes in writing. The board president thinks they're just being difficult and tosses the request in a drawer. Under § 209.006, the association has 10 business days to respond. After that? The penalty is $500 per day, up to $10,000 — and the homeowner can collect it in court.",
+          situation: "A homeowner requests financial records and meeting minutes in writing. The board president thinks they're just being difficult and tosses the request in a drawer.",
+          question: "What does § 209.006 require the association to do — and what's the penalty for ignoring this request?",
           revealText: "The lesson is simple: always respond to records requests within the statutory deadline, even if you think the request is unreasonable. Ignoring it is never worth the financial and legal risk. Set up a process so requests don't fall through the cracks.",
         },
         {
@@ -470,6 +472,7 @@ async function main() {
           type: "scenario",
           title: "The Selective Enforcement Trap",
           situation: "Riverwalk HOA has a CC&R provision prohibiting fences taller than 6 feet. Over five years, six homeowners built 7-foot fences and the board took no action. When a seventh homeowner does the same, the board finally sends a violation notice.",
+          question: "Does the seventh homeowner have a valid defense? What should the board have done differently?",
           revealText: "The homeowner raises the selective enforcement defense — and it's a strong one. Because the board knowingly allowed six prior violations, a court may find the board has waived its right to enforce, or at minimum must begin enforcement against all violators simultaneously. The takeaway: enforce early, enforce consistently, or risk losing the ability to enforce at all.",
         },
         {
@@ -531,7 +534,8 @@ async function main() {
         {
           type: "scenario",
           title: "The Notice That Got Everything Wrong",
-          situation: "Meadowbrook POA sends a homeowner this notice: 'Your property is not in compliance with community standards. Please correct the situation within 10 days or fines will be assessed.' Looks official, right? Count the problems.",
+          situation: "Meadowbrook POA sends a homeowner this notice: 'Your property is not in compliance with community standards. Please correct the situation within 10 days or fines will be assessed.' Looks official, right?",
+          question: "How many things are wrong with this notice under Chapter 209? Would a fine based on it hold up?",
           revealText: "This notice fails on every level: (1) doesn't identify the specific violation, (2) doesn't cite a CC&R provision, (3) gives only 10 days instead of the required 30, (4) threatens fines without mentioning a hearing, and (5) was sent by regular mail instead of certified. Any fine based on this notice would be thrown out immediately. Always use a standardized template reviewed by the association's attorney.",
         },
         {
@@ -644,6 +648,7 @@ async function main() {
           type: "scenario",
           title: "The Daycare Dilemma — When It's Not Black and White",
           situation: "Heritage Hills POA has a homeowner running an in-home daycare, in apparent violation of Section 3.1 prohibiting 'commercial use.' The board sent notice, held a hearing, and assessed $1,500 in fines. The homeowner argues a small in-home daycare isn't 'commercial use' and has a county home occupation permit to prove it.",
+          question: "Should the board keep handling this internally, or is it time to bring in legal counsel? What factors matter here?",
           revealText: "This is a case where both sides have a reasonable argument. 'Commercial use' is ambiguous when applied to a small daycare. The homeowner has a government permit that complicates the association's position. The violation is ongoing despite fines. And whatever the board decides sets a precedent for every future home occupation dispute. This is exactly when to bring in legal counsel — don't try to handle it alone.",
         },
         {
@@ -698,6 +703,7 @@ async function main() {
           type: "scenario",
           title: "The $2,000 Solution vs. the $50,000 Lawsuit",
           situation: "A homeowner built an enclosed patio without architectural approval. The board assessed $4,500 in fines. The homeowner refused to remove it, citing selective enforcement (similar structures exist nearby). After a year of back-and-forth going nowhere, both sides agreed to mediation.",
+          question: "What kind of creative solution could mediation produce that a courtroom couldn't? Is the cost difference worth it?",
           revealText: "The mediator helped them reach a creative deal: the homeowner submits an after-the-fact architectural review, modifies the patio to meet setback requirements, and pays a reduced $1,500 fine. Total mediation cost: $2,000. The litigation alternative? $25,000-$50,000 with an uncertain outcome — and everyone still has to live in the same neighborhood afterward.",
         },
         {

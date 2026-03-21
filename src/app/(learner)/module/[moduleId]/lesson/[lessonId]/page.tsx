@@ -20,9 +20,10 @@ export default async function LessonPage({ params }: LessonPageProps) {
     redirect("/login");
   }
 
-  const [moduleData, content] = await Promise.all([
+  const [moduleData, content, allModules] = await Promise.all([
     getModuleWithLessons(moduleId),
     getPublishedContent(lessonId),
+    db.module.findMany({ orderBy: { sortOrder: "asc" }, select: { id: true, title: true, sortOrder: true } }),
   ]);
 
   if (!moduleData) {
@@ -57,6 +58,12 @@ export default async function LessonPage({ params }: LessonPageProps) {
     orderBy: { joinedAt: "desc" },
   });
   const orgType: OrgType = (membership?.org.type as OrgType) ?? "HOA";
+
+  // Find next module for end-of-module navigation
+  const currentModuleIndex = allModules.findIndex((m) => m.id === moduleId);
+  const nextModule = currentModuleIndex < allModules.length - 1
+    ? allModules[currentModuleIndex + 1]
+    : null;
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
@@ -114,6 +121,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
         lessonId={lessonId}
         prevLesson={prevLesson ? { id: prevLesson.id, title: prevLesson.title } : null}
         nextLesson={nextLesson ? { id: nextLesson.id, title: nextLesson.title } : null}
+        nextModule={!nextLesson && nextModule ? nextModule : null}
         isCurrentComplete={isCurrentComplete}
       />
     </div>

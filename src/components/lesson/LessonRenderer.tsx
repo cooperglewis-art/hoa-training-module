@@ -65,6 +65,7 @@ export function LessonRenderer({ blocks, orgType }: LessonRendererProps) {
                 key={key}
                 title={block.title}
                 situation={block.situation}
+                question={block.question}
                 revealText={block.revealText}
               />
             );
